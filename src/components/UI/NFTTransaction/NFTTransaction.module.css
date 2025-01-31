@@ -1,0 +1,18 @@
+.buy_button {
+	font-family: 'Involve SemiBold';
+	font-size: 16px;
+	height: 54px;
+	width: 280px;
+	border-radius: 14px;
+	border: none;
+	background: var(--success-button);
+	color: var(--button-text-color);
+	cursor: pointer;
+}
+
+.error_message,
+.success_message {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+}

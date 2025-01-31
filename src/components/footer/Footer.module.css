@@ -1,0 +1,10 @@
+.footer{
+	font-family: 'Manrope Light';
+	text-align: center;
+	margin-top: 4.6%;
+	font-size: 12px;
+}
+.footer_team {
+	font-family: 'Manrope Medium';
+	color: var(--footer-color);
+}

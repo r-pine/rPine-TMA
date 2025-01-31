@@ -1,0 +1,138 @@
+.container {
+	background-color: var(--bg-container-color);
+	max-width: var(--app-max-width);
+	border-radius: 18px;
+	padding: 4.58% 5.09%;
+}
+
+.header,
+.container_element,
+.market {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+h1 {
+	font-size: 20px;
+}
+
+.balance_container {
+	border: 1px solid;
+	border-color: var(--border-color);
+	border-radius: 11px;
+	text-align: center;
+}
+
+.balance_statement {
+	font-family: 'Manrope Light';
+	font-size: 12px;
+}
+
+.container_element,
+.header_paragraph {
+	font-family: 'Manrope Light';
+	font-size: 14px;
+	color: var(--text-blue-color);
+}
+
+.paragraph {
+	font-family: 'Manrope Light';
+	font-size: 12px;
+	color: var(--text-color);
+	text-align: center;
+	margin-top: 0;
+}
+.container_element_right {
+	font-size: 12px;
+	color: var(--text-color);
+}
+
+.container_element_left {
+	display: flex;
+	align-items: center;
+}
+
+.button_container {
+	font-family: 'Involve SemiBold';
+	font-size: 12px;
+}
+
+.market_element_left {
+	font-family: 'Manrope Light';
+	font-size: 12px;
+	color: var(--text-color);
+}
+
+.main_container{
+	border: 1px solid;
+	border-color: var(--border-color);
+	border-radius: 11px;
+	padding: 16px;
+}
+
+.img_wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+img {
+	max-width: 280px;
+}
+
+.header_paragraph {
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.button_description {
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+.header,
+.img_wrapper,
+.button_container {
+	margin-bottom: 2.78%;
+}
+
+.balance_container {
+	margin-bottom: 2.5%;
+}
+
+.link,
+.market_element_right {
+	font-family: 'Manrope Medium';
+	font-size: 12px;
+	color: var(--text-color);
+}
+
+.button_group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.button_group>*:nth-child(1) {
+	flex: 1 1 100%;
+}
+
+.button_group>*:nth-child(2) {
+	flex: 2 2 0;
+}
+
+.button_group>*:nth-child(3) {
+	flex: 1 1 0;
+}
+
+.button_help {
+	border: var(--border-button-color) solid 1px;
+	border-radius: 14px;
+	font-family: 'Involve SemiBold';
+	font-size: 16px;
+	background: var(--bg-modal-color);
+	color: var(--button-text-color);
+	height: 54px;
+}

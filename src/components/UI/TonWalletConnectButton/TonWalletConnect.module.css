@@ -1,0 +1,50 @@
+.connect_button {
+	height: 54px;
+	min-width: 156px;
+	width: 100%;
+	background: var(--button-color);
+	color: var(--button-text-color);
+	border-radius: 14px;
+	border: none;
+	font-family: 'Involve SemiBold';
+	font-size: 16px;
+	text-align: center;
+
+	cursor: pointer;
+	position: relative;
+}
+
+.dropdown {
+	background-color: var(--header-color);
+	min-width: 130px;
+	max-width: 170px;
+	color: var(--bg-color);
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 5px;
+
+	position: absolute;
+}
+.dropdown_disconnect_option,
+.dropdown_copy_option {
+	min-width: 120px;
+	max-width: 170px;
+	height: 28px;
+	align-content: center;
+	font-family: 'Involve SemiBold';
+	font-size: 12px;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.disconnect_icon,
+.copy_icon {
+	margin-right: 5px;
+}
+
+.dropdown_icon {
+	margin-left: 5px;
+}
