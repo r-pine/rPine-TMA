@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
 import Home from './components/home/Home';
 import NFTPage from './components/nftpage/NFTPage';
@@ -17,12 +17,12 @@ function App() {
 					},
 				},
 			}}>
-			<BrowserRouter>
+			<HashRouter>
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/nft" element={<NFTPage />} />
 				</Routes>
-			</BrowserRouter>
+			</HashRouter>
 		</TonConnectUIProvider>
 	);
 }
