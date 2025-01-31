@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import TonWalletConnect from '../UI/TonWalletConnectButton/TonWalletConnect';
 
 const Home = () => {

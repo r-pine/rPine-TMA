@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import ReactModal from 'react-modal';
 import { useTranslation, Trans } from 'react-i18next';
 import styles from './NFTPage.module.css';

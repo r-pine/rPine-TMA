@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { TonConnectUIProvider, THEME, BorderRadius } from '@tonconnect/ui-react';
+import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
 import Home from './components/home/Home';
 import NFTPage from './components/nftpage/NFTPage';
 import './i18n';
-import ReactModal from 'react-modal';
 
 function App() {
 	return (
