@@ -4,7 +4,7 @@ import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // https://vite.dev/config/
 export default defineConfig({
-	base: 'rPine-TMA.git',
+	base: '/rPine-TMA/',
 	server: {
 		https: true,
 		cors: true,

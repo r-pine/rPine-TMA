@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "proxy": "https://tonapi.io",
   "type": "module",
-  "homepage": "https://github.com/izyryanova/rPine-TMA.git",
+  "homepage": "https://izyryanova.github.io/rPine-TMA",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "proxy": "lcp --proxyUrl https://localhost:5173",
 	"predeploy": "npm run build",
-	"deploy": "gh-pages -d build"
+	"deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@tonconnect/ui-react": "^2.0.11",

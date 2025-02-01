@@ -26,7 +26,7 @@ const BuyNFTPopup = () => {
 			>
 				<div className={styles.popup_buy_container}>
 					<p className={styles.paragraph}>{t('buy_NFT_confirmation')}</p>
-					<img src="../src/assets/img/pine_happy_img.png" alt="happypine_img" className={styles.img}/>
+					<img src="/pine_happy_img.png" alt="happypine_img" className={styles.img}/>
 					<NFTTransaction onConfirm={() => console.log('Transaction confirmed!')} />
 					<button className={styles.close_button} onClick={closeModal}>{t('back_button')}</button>
 				</div>
