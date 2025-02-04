@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "proxy": "https://tonapi.io",
   "type": "module",
-  "homepage": "https://izyryanova.github.io/rPine-TMA",
+  "homepage": "nft.rpine.xyz",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
