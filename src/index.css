@@ -9,7 +9,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: var(--bg-color);
-  background-image: url(./assets/img/background_svg.svg);
+  background-image: url(/assets/img/background_svg.svg);
   background-repeat: no-repeat;
 	background-size: cover;
 	font-synthesis: none;
@@ -41,72 +41,72 @@
 
 @font-face {
 	font-family: 'Poppins Light';
-	src: url(./assets/fonts/poppins/Poppins_300.ttf) format('truetype'),
-	url(./assets/fonts/poppins/Poppins_300.woff) format('woff'),
-	url(./assets/fonts/poppins/Poppins_300.woff2) format('woff2');
+	src: url(/assets/fonts/poppins/Poppins_300.ttf) format('truetype'),
+	url(/assets/fonts/poppins/Poppins_300.woff) format('woff'),
+	url(/assets/fonts/poppins/Poppins_300.woff2) format('woff2');
 	font-weight: 300;
 }
 
 @font-face {
 	font-family: 'Poppins Normal';
-	src: url(./assets/fonts/poppins/Poppins_400.ttf) format('truetype'),
-	url(./assets/fonts/poppins/Poppins_400.woff) format('woff'),
-	url(./assets/fonts/poppins/Poppins_400.woff2) format('woff2');
+	src: url(/assets/fonts/poppins/Poppins_400.ttf) format('truetype'),
+	url(/assets/fonts/poppins/Poppins_400.woff) format('woff'),
+	url(/assets/fonts/poppins/Poppins_400.woff2) format('woff2');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'Poppins Medium';
-	src: url(./assets/fonts/poppins/Poppins_500.ttf) format('truetype'),
-	url(./assets/fonts/poppins/Poppins_500.woff) format('woff'),
-	url(./assets/fonts/poppins/Poppins_500.woff2) format('woff2');
+	src: url(/assets/fonts/poppins/Poppins_500.ttf) format('truetype'),
+	url(/assets/fonts/poppins/Poppins_500.woff) format('woff'),
+	url(/assets/fonts/poppins/Poppins_500.woff2) format('woff2');
 	font-weight: 500;
 }
 
 @font-face {
 	font-family: 'Involve Normal';
-	src: url(./assets/fonts/involve/Involve_400.ttf) format('truetype'),
-	url(./assets/fonts/involve/Involve_400.woff) format('woff'),
-	url(./assets/fonts/involve/Involve_400.woff2) format('woff2');
+	src: url(/assets/fonts/involve/Involve_400.ttf) format('truetype'),
+	url(/assets/fonts/involve/Involve_400.woff) format('woff'),
+	url(/assets/fonts/involve/Involve_400.woff2) format('woff2');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'Involve Medium';
-	src: url(./assets/fonts/involve/Involve_500.ttf) format('truetype'),
-	url(./assets/fonts/involve/Involve_500.woff) format('woff'),
-	url(./assets/fonts/involve/Involve_500.woff2) format('woff2');
+	src: url(/assets/fonts/involve/Involve_500.ttf) format('truetype'),
+	url(/assets/fonts/involve/Involve_500.woff) format('woff'),
+	url(/assets/fonts/involve/Involve_500.woff2) format('woff2');
 	font-weight: 500;
 }
 
 @font-face {
 	font-family: 'Involve SemiBold';
-	src: url(./assets/fonts/involve/Involve_600.ttf) format('truetype'),
-	url(./assets/fonts/involve/Involve_600.woff) format('woff'),
-	url(./assets/fonts/involve/Involve_600.woff2) format('woff2');
+	src: url(/assets/fonts/involve/Involve_600.ttf) format('truetype'),
+	url(/assets/fonts/involve/Involve_600.woff) format('woff'),
+	url(/assets/fonts/involve/Involve_600.woff2) format('woff2');
 	font-weight: 600;
 }
 
 @font-face {
 	font-family: 'Manrope Light';
-	src: url(./assets/fonts/manrope/Manrope_300.ttf) format('truetype'),
-		url(./assets/fonts/manrope/Manrope_300.woff) format('woff'),
-		url(./assets/fonts/manrope/Manrope_300.woff2) format('woff2');
+	src: url(/assets/fonts/manrope/Manrope_300.ttf) format('truetype'),
+		url(/assets/fonts/manrope/Manrope_300.woff) format('woff'),
+		url(/assets/fonts/manrope/Manrope_300.woff2) format('woff2');
 	font-weight: 300;
 }
 
 @font-face {
 	font-family: 'Manrope Normal';
-	src: url(./assets/fonts/manrope/Manrope_400.ttf) format('truetype'),
-		url(./assets/fonts/manrope/Manrope_400.woff) format('woff'),
-		url(./assets/fonts/manrope/Manrope_400.woff2) format('woff2');
+	src: url(/assets/fonts/manrope/Manrope_400.ttf) format('truetype'),
+		url(/assets/fonts/manrope/Manrope_400.woff) format('woff'),
+		url(/assets/fonts/manrope/Manrope_400.woff2) format('woff2');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'Manrope Medium';
-	src: url(./assets/fonts/manrope/Manrope_500.ttf) format('truetype'),
-		url(./assets/fonts/manrope/Manrope_500.woff) format('woff'),
-		url(./assets/fonts/manrope/Manrope_500.woff2) format('woff2');
+	src: url(/assets/fonts/manrope/Manrope_500.ttf) format('truetype'),
+		url(/assets/fonts/manrope/Manrope_500.woff) format('woff'),
+		url(/assets/fonts/manrope/Manrope_500.woff2) format('woff2');
 	font-weight: 500;
 }

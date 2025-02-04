@@ -35,7 +35,7 @@ const NFTPage = () => {
 
 					<div className={styles.main_container}>
 						<div className={styles.img_wrapper}>
-						<img src="/main_img.png" alt="nft_img" className={styles.img} />
+						<img src="./assets/img/main_img.png" alt="nft_img" className={styles.img} />
 						</div>
 
 						<div className={styles.container_element}>
