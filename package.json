@@ -11,8 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "proxy": "lcp --proxyUrl https://localhost:5173",
-	"predeploy": "npm run build",
-	"deploy": "gh-pages -d dist"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@tonconnect/ui-react": "^2.0.11",
@@ -23,6 +23,7 @@
     "i18next-browser-languagedetector": "^8.0.2",
     "i18next-http-backend": "^3.0.1",
     "local-cors-proxy": "^1.1.0",
+    "motion": "^12.3.0",
     "react": "^18.3.1",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.3.1",

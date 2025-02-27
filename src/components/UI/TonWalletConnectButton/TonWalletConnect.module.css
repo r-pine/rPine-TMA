@@ -9,7 +9,6 @@
 	font-family: 'Involve SemiBold';
 	font-size: 16px;
 	text-align: center;
-
 	cursor: pointer;
 	position: relative;
 }
@@ -19,6 +18,7 @@
 	min-width: 130px;
 	max-width: 170px;
 	color: var(--bg-color);
+	color: #011116;
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;

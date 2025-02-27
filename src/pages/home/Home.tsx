@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import TonWalletConnect from '../UI/TonWalletConnectButton/TonWalletConnect';
+import TonWalletConnect from '../../components/UI/TonWalletConnectButton/TonWalletConnect';
 
 const Home = () => {
 

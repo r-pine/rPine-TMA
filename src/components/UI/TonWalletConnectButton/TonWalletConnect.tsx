@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import useTonWalletAddress from '../../../hooks/useWalletAddress.hook';
+import * as motion from "motion/react-client"
+import useTonWalletAddress from '../../../entities/wallet/hooks/useWalletAddress.hook';
 import styles from './TonWalletConnect.module.css';
 
 const TonWalletConnect = () => {
@@ -54,12 +55,17 @@ const TonWalletConnect = () => {
 		<div>
 			{walletAddress ? (
 				<div>
-					<button className={styles.connect_button} onClick={toggleDropdown}>
+					<motion.button
+						className={styles.connect_button}
+						onClick={toggleDropdown}
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+					>
 						{formattedAddress}
 						<svg className={styles.dropdown_icon} width="15" height="7" viewBox="0 0 15 7" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M13.3337 1L7.50032 6L1.66699 1" stroke="#ECECEC" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 						</svg>
-					</button>
+					</motion.button>
 					{isDropdownVisible && (
 						<div ref={dropdownRef} className={styles.dropdown}>
 							<CopyToClipboard text={walletAddress} onCopy={handleCopy}>
@@ -83,7 +89,12 @@ const TonWalletConnect = () => {
 					)}
 				</div>
 			) : (
-				<button className={styles.connect_button} onClick={handleWalletAction}>{t('wallet_connect_button')}</button>
+				<motion.button 
+					className={styles.connect_button} 
+					onClick={handleWalletAction}
+					whileHover={{ scale: 1.02 }} // Анимация при наведении
+					whileTap={{ scale: 0.95 }}>{t('wallet_connect_button')}
+				</motion.button>
 			)}
 		</div>
 	);

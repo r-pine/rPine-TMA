@@ -41,7 +41,7 @@ h1 {
 	font-family: 'Manrope Light';
 	font-size: 12px;
 	color: var(--text-color);
-	text-align: center;
+	text-align: justify;
 	margin-top: 0;
 }
 .container_element_right {
@@ -83,7 +83,7 @@ img {
 }
 
 .header_paragraph {
-	text-align: center;
+	text-align: left;
 	margin-bottom: 0;
 }
 

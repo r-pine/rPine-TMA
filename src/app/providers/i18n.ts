@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import translationsEn from './locales/en/translation.json';
-import translationsRu from './locales/ru/translation.json';
+import translationsEn from '../../shared/locales/en/translation.json';
+import translationsRu from '../../shared/locales/ru/translation.json';
 
 const getUserLanguage = (): string => {
 	const telegramLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code;
@@ -22,10 +22,10 @@ i18n
 				translation: translationsRu,
 			},
 		},
-		lng: getUserLanguage(), // Устанавливаем язык на основе функции
-		fallbackLng: 'en', // Запасной язык
+		lng: getUserLanguage(),
+		fallbackLng: 'en',
 		interpolation: {
-			escapeValue: false, // React сам экранирует строки
+			escapeValue: false,
 		},
 	});
 

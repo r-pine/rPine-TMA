@@ -1,4 +1,4 @@
-import useTonBalance from '../../hooks/useTonBalance.hook';
+import useTonBalance from '../../entities/wallet/hooks/useTonBalance.hook';
 import { useTranslation } from 'react-i18next';
 
 

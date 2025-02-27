@@ -1,8 +1,8 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
-import Home from './components/home/Home';
-import NFTPage from './components/nftpage/NFTPage';
-import './i18n';
+import Home from '../pages/home/Home';
+import NFTPage from '../pages/nft/NFTPage';
+import './providers/i18n';
 
 function App() {
 	return (

@@ -1,132 +1,134 @@
-import useTonWalletAddress from '../../../hooks/useWalletAddress.hook';
+import useTonWalletAddress from '../../../entities/wallet/hooks/useWalletAddress.hook';
 import styles from './NFTTransaction.module.css';
+import * as motion from "motion/react-client"
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTonConnectUI } from '@tonconnect/ui-react';
 
-interface PayloadData {
-	messages: unknown[];
+interface Message {
+	id: string;
+	amount: number;
+	recipient: string;
+	stateInit?: string;
+	payload?: string;
 }
 
-const NFTTransaction: React.FC<{ onConfirm: () => void }> = ({ onConfirm }) => {
-	const { t } = useTranslation();
+interface PayloadData {
+	messages: Message[];
+}
 
-	const { walletAddress, formattedAddress } = useTonWalletAddress();
+interface SendTransactionRequest {
+	validUntil: number;
+	messages: {
+		address: string;
+		amount: string;
+		stateInit?: string;
+		payload?: string;
+	}[];
+}
+
+const NFTTransaction: React.FC<{ onConfirm: () => void; onClick: () => void }> = ({ onConfirm, onClick }) => {
+	const { t } = useTranslation();
+	const { walletAddress, formattedAddress, isConnected } = useTonWalletAddress();
+	const [tonConnectUI] = useTonConnectUI();
 
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
 	const [isProcessing, setIsProcessing] = useState(false);
-	
-	const fetchPayloadForAmount = async () => {
-		if (!walletAddress) {
-			const message = 'Wallet address is not available';
-			setErrorMessage(message);
-			console.error(message);
-			return [];
-		}
+	const [messages, setMessages] = useState<Message[]>([]);
 
-		let queryString: string | null = null;
-		let userId: string | null = null;
+	useEffect(() => {
+		if (!isConnected || !walletAddress) return;
 
-		if (window.Telegram?.WebApp?.initData) {
-			queryString = decodeURI(window.Telegram.WebApp.initData);
-			const params = new URLSearchParams(queryString);
-			const userJson = params.get("user");
+		const fetchPayloadForAmount = async () => {
+			let queryString: string | null = null;
+			let userId: string | null = null;
 
-			if (userJson) {
-				const user = JSON.parse(decodeURIComponent(userJson));
-				userId = String(user.id);
-			}
-		}
+			if (window.Telegram?.WebApp?.initData) {
+				queryString = decodeURI(window.Telegram.WebApp.initData);
+				const params = new URLSearchParams(queryString);
+				const userJson = params.get('user');
 
-		try {
-			const response = await fetch('https://air-swap.rpine.xyz/api/nft', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					address: walletAddress,
-					user_id: userId,
-					query: queryString,
-				}),
-			});
-
-			if (!response.ok) {
-				const errorMessage = 'Network error';
-				setErrorMessage(errorMessage);
-				console.error(errorMessage);
-				return [];
+				if (userJson) {
+					const user = JSON.parse(decodeURIComponent(userJson));
+					userId = String(user.id);
+				}
 			}
 
-			const payloadData: PayloadData = await response.json();
-			return payloadData.messages;
-		} catch (error) {
-			if (error instanceof TypeError) {
-				const message = 'Network error: Please check your internet connection.';
-				setErrorMessage(message);
-				console.error(message, error);
-			} else {
-				const message = 'Error fetching payload';
-				setErrorMessage(message);
-				console.error(message, error);
-			}
-			return [];
-		}
-	};
+			try {
+				const response = await fetch('https://air-swap.rpine.xyz/api/nft', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						address: walletAddress,
+						user_id: userId,
+						query: queryString,
+					}),
+				});
 
-	const sendTransaction = async (messages: unknown[]) => {
+				if (!response.ok) {
+					throw new Error('Network error');
+				}
+
+				const payloadData: PayloadData = await response.json();
+				setMessages(payloadData.messages);
+			} catch (error) {
+				setErrorMessage('Error fetching payload');
+				console.error('Error fetching payload:', error);
+			}
+		};
+
+		fetchPayloadForAmount();
+	}, [isConnected, walletAddress]);
+
+	const sendTransaction = async () => {
 		if (!messages || messages.length === 0) {
-			const message = 'No transaction data available';
-			setErrorMessage(message);
-			console.error(message);
+			setErrorMessage('No transaction data available');
 			return;
 		}
 
-		const transaction = {
+		const transaction: SendTransactionRequest = {
 			validUntil: Math.floor(Date.now() / 1000) + 60,
-			messages: messages,
+			messages: messages.map(msg => ({
+				address: msg.recipient,
+				amount: msg.amount.toString(),
+				stateInit: msg.stateInit,
+				payload: msg.payload,
+			})),
 		};
 
 		try {
-			console.log('Sending transaction:', transaction);
-			const message = `Transaction sent successfully for wallet: ${formattedAddress}`;
-			setSuccessMessage(message);
+			setIsProcessing(true);
+			await tonConnectUI.sendTransaction(transaction);
+			setSuccessMessage(`Transaction sent successfully for wallet: ${formattedAddress}`);
 			onConfirm();
 		} catch (error) {
-			let errorMessage = 'Error sending transaction';
-			if (error instanceof Error) {
-				errorMessage = error.message || errorMessage;
-			}
-			setErrorMessage(errorMessage);
-			console.error(errorMessage, error);
+			setErrorMessage('Oops! Something went wrong! Please try again later');
+			console.error('Error sending transaction:', error);
+		} finally {
+			setIsProcessing(false);
 		}
 	};
 
-	const handleButtonClick = async () => {
-		if (isProcessing) return;
-		setErrorMessage(null);
-		setSuccessMessage(null);
-		setIsProcessing(true);
-		const messages = await fetchPayloadForAmount();
-		if (messages.length > 0) {
-			await sendTransaction(messages);
-		}
-		setIsProcessing(false);
-	};
 	return (
 		<div>
 			{errorMessage && <div className={styles.error_message}>{errorMessage}</div>}
 			{successMessage && <div className={styles.success_message}>{successMessage}</div>}
 			<div className={styles.button_container}>
 				{!isProcessing && !errorMessage && !successMessage && (
-					<button
+					<motion.button
 						className={styles.buy_button}
-						onClick={handleButtonClick}
-						disabled={isProcessing}
+						onClick={() => {
+							onClick();
+							sendTransaction();
+						}}
+						whileHover={{ scale: 1.02 }}
+						disabled={isProcessing || !isConnected || messages.length === 0}
 					>
 						{t('yes_button')}
-					</button>
+					</motion.button>
 				)}
 			</div>
 		</div>
