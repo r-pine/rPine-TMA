@@ -13,7 +13,7 @@
 	linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1)),
 	url(/assets/img/background_svg.svg);
   background-repeat: no-repeat;
-	background-size: cover;
+	background-size: 100% 150%;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
