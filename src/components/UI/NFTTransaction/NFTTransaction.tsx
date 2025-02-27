@@ -75,7 +75,7 @@ const NFTTransaction: React.FC<{ onConfirm: () => void; onClick: () => void }> =
 				const payloadData: PayloadData = await response.json();
 				setMessages(payloadData.messages);
 			} catch (error) {
-				setErrorMessage('Error fetching payload');
+				setErrorMessage(t('error_fetching'));
 				console.error('Error fetching payload:', error);
 			}
 		};
@@ -85,7 +85,7 @@ const NFTTransaction: React.FC<{ onConfirm: () => void; onClick: () => void }> =
 
 	const sendTransaction = async () => {
 		if (!messages || messages.length === 0) {
-			setErrorMessage('No transaction data available');
+			setErrorMessage(t('error_transaction_data'));
 			return;
 		}
 
@@ -102,10 +102,10 @@ const NFTTransaction: React.FC<{ onConfirm: () => void; onClick: () => void }> =
 		try {
 			setIsProcessing(true);
 			await tonConnectUI.sendTransaction(transaction);
-			setSuccessMessage(`Transaction sent successfully for wallet: ${formattedAddress}`);
+			setSuccessMessage(t('success_transaction', { address: formattedAddress }));
 			onConfirm();
 		} catch (error) {
-			setErrorMessage('Oops! Something went wrong! Please try again later');
+			setErrorMessage(t('error_global'));
 			console.error('Error sending transaction:', error);
 		} finally {
 			setIsProcessing(false);

@@ -25,17 +25,16 @@ const BuyNFTPopup = () => {
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.95 }}>
 					{t('buy_NFT_button')}
-
 			</motion.button>
 
-		<AnimatePresence>
-			{isOpen && (
 				<ReactModal
 				isOpen={isOpen}
 				onRequestClose={closeModal}
 				overlayClassName={styles.overlay}
 				className={styles.content}
 			>
+			<AnimatePresence>
+				{isOpen && (
 				<motion.div
 					initial={{ opacity: 0, scale: 0.5 }}
 					animate={{ opacity: 1, scale: 1 }}
@@ -50,14 +49,15 @@ const BuyNFTPopup = () => {
 						className={styles.close_button}
 						onClick={closeModal}
 						whileHover={{ scale: 1.02 }}>
-						
 						{t('back_button')}
 					</motion.button>
 				</div>
 				</motion.div>
+					)}
+				</AnimatePresence>
 			</ReactModal>
-			)}
-			</AnimatePresence>
+
+
 		</div>
 	);
 };

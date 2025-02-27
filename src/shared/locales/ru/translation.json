@@ -30,5 +30,9 @@
 	"yes_button": "Да",
 	"back_button": "Назад",
 	"copy_address_button": "Скопировать адрес",
-	"copy_address_success": "Скопировано!"
+	"copy_address_success": "Скопировано!",
+	"error_fetching": "Не удалось передать платежные данные",
+	"error_transaction_data": "Данные о транзакции недоступны",
+	"error_global": "Упс! Что-то пошло не так. Пожалуйста, попробуйте снова",
+	"success_transaction": "Сделка успешно проведена на кошелек: {{address}}"
 }

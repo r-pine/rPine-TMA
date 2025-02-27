@@ -30,5 +30,9 @@
 	"yes_button": "Yes",
 	"back_button": "Back",
 	"copy_address_button": "Copy address",
-	"copy_address_success": "Address was copied!"
+	"copy_address_success": "Address was copied!",
+	"error_fetching": "Error fetching payload",
+	"error_transaction_data": "No transaction data available",
+	"error_global":"Oops! Something went wrong! Please try again later",
+	"success_transaction":"Transaction sent successfully for wallet: {{address}}"
 }

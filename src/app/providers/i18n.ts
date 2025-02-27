@@ -4,11 +4,8 @@ import translationsEn from '../../shared/locales/en/translation.json';
 import translationsRu from '../../shared/locales/ru/translation.json';
 
 const getUserLanguage = (): string => {
-	const telegramLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code;
-	if (telegramLang === 'ru') {
-		return 'ru';
-	}
-	return 'en';
+	const telegramLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code ?? 'en';
+	return telegramLang.startsWith('ru') ? 'ru' : 'en';
 };
 
 i18n
