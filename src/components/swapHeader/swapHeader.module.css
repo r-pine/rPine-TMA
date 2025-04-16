@@ -1,0 +1,61 @@
+.container {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-bottom: 8px;
+}
+
+.wrapper {
+	background-color: var(--bg-color);
+	padding: 8px;
+	height: 56px;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.wrapper:first-child {
+	flex: 1;
+	margin-right: 8px;
+}
+
+.header_container {
+	display: flex;
+	align-items: center;
+	word-spacing: 2px;
+	width: 100%;
+	margin: 0 20px;
+}
+
+.header {
+	font-family: 'Manrope Normal';
+	font-size: 1em;
+	color: var(--header-color);
+	margin: 0 0 0 8px;
+	width: 100%;
+}
+
+.openMoreButton {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.open_more_container {
+	width: 56px;
+	height: 56px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 3px;
+}
+
+.circle {
+	height: 8px;
+	width: 8px;
+	background-color: var(--header-color);
+	border-radius: 50%;
+}

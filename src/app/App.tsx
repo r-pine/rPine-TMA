@@ -1,12 +1,12 @@
-import { HashRouter, Route, Routes } from 'react-router-dom';
-import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
-import Home from '../pages/home/Home';
-import NFTPage from '../pages/nft/NFTPage';
-import './providers/i18n';
+import { HashRouter } from 'react-router-dom'
+import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react'
+import { AppRoutes } from './Routes'
+import './providers/i18n'
 
 function App() {
 	return (
-		<TonConnectUIProvider manifestUrl="https://api.rpine.xyz/static/json/tonconnect-manifest.json"
+		<TonConnectUIProvider
+			manifestUrl="https://api.rpine.xyz/static/json/tonconnect-manifest.json"
 			uiPreferences={{
 				theme: THEME.DARK,
 				colorsSet: {
@@ -18,13 +18,10 @@ function App() {
 				},
 			}}>
 			<HashRouter>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/nft" element={<NFTPage />} />
-				</Routes>
+				<AppRoutes />
 			</HashRouter>
 		</TonConnectUIProvider>
-	);
+	)
 }
 
-export default App;
+export default App

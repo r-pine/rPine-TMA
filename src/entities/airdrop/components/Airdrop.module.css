@@ -1,0 +1,34 @@
+.buy_button {
+	font-family: 'Involve SemiBold';
+	font-size: 16px;
+	height: 54px;
+	width: 100%;
+	border-radius: 14px;
+	border: none;
+	background: var(--success-button);
+	color: var(--button-text-color);
+	cursor: pointer;
+}
+
+.error_message,
+.success_message {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+}
+
+.loading {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+	color: var(--text-color);
+	padding: 20px 0;
+}
+
+.error {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+	color: var(--error-color);
+	padding: 20px 0;
+}

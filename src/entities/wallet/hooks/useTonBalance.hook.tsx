@@ -1,35 +1,54 @@
 import { useEffect, useState } from 'react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
+import { fetchBalance } from '../api/balance.api';
+import { useDispatch } from 'react-redux';
+import { setTonBalance } from '../../../store/wallet/slice';
 
 const useTonBalance = () => {
-	const [balance, setBalance] = useState<number | null>(null);
+	const [balance, setLocalBalance] = useState<string>('0');
 	const [tonConnectUI] = useTonConnectUI();
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const fetchBalance = async () => {
-			if (!tonConnectUI.wallet) return;
+		let isMounted = true;
+		let timeout: ReturnType<typeof setTimeout> | null = null;
+
+		const updateBalance = async () => {
+			if (!tonConnectUI.wallet) {
+				if (isMounted) {
+					setLocalBalance('0');
+					dispatch(setTonBalance('0'));
+				}
+				return;
+			}
+
 			const account = tonConnectUI.wallet.account;
-			const response = await fetch(
-				`https://toncenter.com/api/v2/getAddressBalance?address=${account.address}`
-			);
-			const data = await response.json();
-			setBalance(parseFloat((data.result / 10 ** 9).toFixed(2)));
+
+			try {
+				const balance = await fetchBalance(account.address);
+				if (isMounted) {
+					const balanceString = balance?.toString() || '0';
+					setLocalBalance(balanceString);
+					dispatch(setTonBalance(balanceString));
+				}
+			} catch (error) {
+				console.error('Error fetching balance:', error);
+				if (isMounted) {
+					setLocalBalance('0');
+					dispatch(setTonBalance('0'));
+				}
+			}
 		};
 
-		fetchBalance();
-
-		const unsubscribe = tonConnectUI.onStatusChange((wallet) => {
-			if (wallet) {
-				fetchBalance();
-			} else {
-				setBalance(null);
-			}
-		});
+		const unsubscribe = tonConnectUI.onStatusChange(updateBalance);
+		updateBalance();
 
 		return () => {
+			isMounted = false;
+			if (timeout) clearTimeout(timeout);
 			unsubscribe();
 		};
-	}, [tonConnectUI]);
+	}, [tonConnectUI, dispatch]);
 
 	return balance;
 };

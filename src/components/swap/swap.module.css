@@ -1,0 +1,162 @@
+.swapContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	font-family: 'Manrope Normal';
+}
+
+.swapBlock {
+	border-radius: 16px;
+	position: relative;
+}
+
+.inputSection,
+.outputSection {
+	position: relative;
+	margin-bottom: 8px;
+	border-radius: 14px;
+	padding: 15px;
+	max-height: 100px;
+	transition: border-color 0.2s;
+	background: var(--bg-swap-block-color);
+}
+
+.amountText {
+	font-size: 14px;
+	padding-bottom: 5px;
+}
+
+.amountText.balanceExceeded {
+	color: #ff3b30;
+}
+
+.inputContainer,
+.outputContainer {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.amountInput {
+	padding: 0;
+	font-size: 28px;
+	outline: none;
+	width: 100%;
+	position: relative;
+	color: var(--header-color);
+	background-color: var(--bg-swap-block-color);
+	border: none;
+}
+
+.amountInput::placeholder {
+	color: var(--header-color);
+	opacity: 0.5;
+}
+
+.amountInput.balanceExceeded {
+	color: #ff3b30;
+}
+
+.tokenSelectorButton {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+}
+
+.balanceAmount {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.usdAmount {
+	color: var(--text-color);
+	font-size: 14px;
+}
+
+.balanceInfo {
+	font-size: 14px;
+	color: var(--text-color);
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.amountInput:disabled {
+	cursor: not-allowed;
+}
+
+.amountInput::-webkit-inner-spin-button,
+.amountInput::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.exchangeRate {
+	text-align: center;
+	color: var(--header-color);
+	margin: 16px 0;
+	font-size: 14px;
+}
+
+.maxTag {
+	border: 1px solid none;
+	color: var(--header-color);
+	background: var(--max-amount-tag);
+	border-radius: 12px;
+	min-width: 40px;
+	text-align: center;
+}
+
+.switchButton {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: var(--bg-color);
+	border: 2px solid var(--bg-swap-block-color);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 1;
+	transition: all 0.2s;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.switchButton:hover {
+	background-color: var(--bg-swap-block-color);
+}
+
+.switchButton:active {
+	transform: translate(-50%, -50%) scale(0.95);
+}
+
+.switchIcon {
+	width: 20px;
+	height: 20px;
+	color: #666;
+}
+
+
+.loading {
+	opacity: 0.7;
+}
+
+
+/* Стили для контейнера с кнопкой Swap */
+.swapButtonContainer {
+	margin-top: 24px;
+}
+
+/* Стили для контейнера с информацией о маршруте */
+.routeInfoContainer {
+	width: 100%;
+}

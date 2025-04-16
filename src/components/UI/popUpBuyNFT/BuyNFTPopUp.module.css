@@ -59,3 +59,19 @@
 	margin-top: 12px;
 	cursor: pointer;
 }
+
+.loading {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+	color: var(--text-color);
+	padding: 20px 0;
+}
+
+.error {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+	color: var(--error-color);
+	padding: 20px 0;
+}

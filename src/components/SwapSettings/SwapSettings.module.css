@@ -1,0 +1,120 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.section {
+	border: 1px solid var(--border-color);
+	border-radius: 20px;
+	padding: 16px;
+}
+
+.headingSection {
+	display: flex;
+	justify-content: space-between;
+}
+
+.optionHeader {
+	margin: 0;
+	font-family: 'Manrope Light';
+	font-size: 16px;
+}
+
+.slippageContainer {
+	border: 1px solid var(--border-color);
+	border-radius: 25px;
+	padding: 4px;
+	display: flex;
+	gap: 8px;
+}
+
+.autoButton {
+	background-color: var(--button-auto-color);
+	border: none;
+	border-radius: 14px;
+	font-family: 'Manrope Normal';
+	font-size: 12px;
+	color: var(--text-ultramarine-color);
+	cursor: pointer;
+}
+
+.inputWrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.slippageInput {
+	font-family: 'Manrope Normal';
+	font-size: 12px;
+	max-width: 30px;
+	background: none;
+	color: var(--text-gray-color);
+	border: none;
+	padding-right: 16px;
+}
+
+.percentSymbol {
+	position: absolute;
+	right: 4px;
+	color: var(--text-gray-color);
+	font-family: 'Manrope Normal';
+	font-size: 12px;
+}
+
+.optionDescription {
+	font-family: 'Manrope Light';
+	font-size: 13px;
+	margin: 12px 0 0 0;
+}
+
+.buttonGroup {
+	border: 1px solid var(--border-color);
+	border-radius: 25px;
+	padding: 4px;
+	display: flex;
+	gap: 8px;
+}
+
+.button {
+	background-color: var(--border-color);
+	border: none;
+	border-radius: 14px;
+	font-family: 'Manrope Normal';
+	font-size: 12px;
+	color: var(--header-color);
+	cursor: pointer;
+	min-width: 20px;
+}
+
+.buttonSelected {
+	background-color: var(--button-auto-color);
+	border: none;
+	border-radius: 14px;
+	font-family: 'Manrope Normal';
+	font-size: 12px;
+	color: var(--text-ultramarine-color);
+	cursor: pointer;
+	min-width: 20px;
+}
+
+.riskDescription {
+	color: var(--text-ultramarine-color);
+	font-family: 'Manrope Normal';
+	font-size: 13px;
+	margin: 12px 0 0 0;
+}
+
+.resetButton {
+	background: none;
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	height: 30px;
+	color: var(--text-ultramarine-color);
+	cursor: pointer;
+}
+
+.resetButton:hover {
+	background: var(--border-color);
+}

@@ -1,91 +1,98 @@
 :root {
-  font-family: 'Manrope Normal', sans-serif;
-  display: flex;
-  justify-content: center;
+	font-family: 'Manrope Normal', sans-serif;
+	display: flex;
+	justify-content: center;
 	padding: 4.6% 5.1%;
-  line-height: 1.5;
-  font-weight: 400;
+	line-height: 1.5;
+	font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: var(--bg-color);
-  background-image: 
-	linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1)),
-	url(/assets/img/background_svg.svg);
-  background-repeat: no-repeat;
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+	background-color: var(--bg-color);
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1)),
+		url(/assets/img/background_svg.svg);
+	background-attachment: fixed;
 	background-size: 100% 150%;
+	background-position: center;
+	background-repeat: no-repeat;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-
-	--bg-color:#011116;
+	--bg-color: #011116;
 	--bg-container-color: #011116F0;
 	--bg-modal-color: #011318;
-		--header-color: #FFFFFF;
-		--text-color: #B9B9B9;
-		--text-blue-color: #43E9FF;
-		--text-gray-color: #96969d;
-		--button-color: #0C9BE9;
-		--button-green: linear-gradient(90deg, rgba(116, 174, 27, 1) 30%, rgba(60, 172, 28, 1) 100%);
-		--button-text-color: #FFFFFF;
-		--error-back-button: linear-gradient(180deg, rgba(247, 64, 99, 1) 10%, rgba(254, 207, 144, 1) 100%);
-		--success-button: linear-gradient(180deg, rgba(0, 192, 103, 1) 10%, rgba(92, 240, 204, 1) 100%);
-		--border-color: #444448;
-		--border-button-color: #C4C4C4;
-		--error-color: #FF5F52;
-		--footer-color: #60F7F7;
-		--app-min-width: 320px;
-		--app-max-width: 480px;
+	--bg-swap-block-color: #08242D;
+	--header-color: #FFFFFF;
+	--paragraph-text-color: #7D7D7D;
+	--text-route-color: #6E6E71;
+	--text-color: #B9B9B9;
+	--text-blue-color: #43E9FF;
+	--text-ultramarine-color: #60F7F7;
+	--text-gray-color: #96969d;
+	--button-auto-color: #156969;
+	--button-connected-wallet: #061E26;
+	--button-color: #0C9BE9;
+	--button-green: linear-gradient(90deg, rgba(116, 174, 27, 1) 30%, rgba(60, 172, 28, 1) 100%);
+	--button-text-color: #FFFFFF;
+	--error-back-button: linear-gradient(180deg, rgba(247, 64, 99, 1) 10%, rgba(254, 207, 144, 1) 100%);
+	--success-button: linear-gradient(180deg, rgba(0, 192, 103, 1) 10%, rgba(92, 240, 204, 1) 100%);
+	--border-color: #444448;
+	--border-button-color: #C4C4C4;
+	--error-color: #FF5F52;
+	--footer-color: #60F7F7;
+	--max-amount-tag: #00C067;
+	--app-max-width: 480px;
 }
 
 
 @font-face {
 	font-family: 'Poppins Light';
 	src: url(/assets/fonts/poppins/Poppins_300.ttf) format('truetype'),
-	url(/assets/fonts/poppins/Poppins_300.woff) format('woff'),
-	url(/assets/fonts/poppins/Poppins_300.woff2) format('woff2');
+		url(/assets/fonts/poppins/Poppins_300.woff) format('woff'),
+		url(/assets/fonts/poppins/Poppins_300.woff2) format('woff2');
 	font-weight: 300;
 }
 
 @font-face {
 	font-family: 'Poppins Normal';
 	src: url(/assets/fonts/poppins/Poppins_400.ttf) format('truetype'),
-	url(/assets/fonts/poppins/Poppins_400.woff) format('woff'),
-	url(/assets/fonts/poppins/Poppins_400.woff2) format('woff2');
+		url(/assets/fonts/poppins/Poppins_400.woff) format('woff'),
+		url(/assets/fonts/poppins/Poppins_400.woff2) format('woff2');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'Poppins Medium';
 	src: url(/assets/fonts/poppins/Poppins_500.ttf) format('truetype'),
-	url(/assets/fonts/poppins/Poppins_500.woff) format('woff'),
-	url(/assets/fonts/poppins/Poppins_500.woff2) format('woff2');
+		url(/assets/fonts/poppins/Poppins_500.woff) format('woff'),
+		url(/assets/fonts/poppins/Poppins_500.woff2) format('woff2');
 	font-weight: 500;
 }
 
 @font-face {
 	font-family: 'Involve Normal';
 	src: url(/assets/fonts/involve/Involve_400.ttf) format('truetype'),
-	url(/assets/fonts/involve/Involve_400.woff) format('woff'),
-	url(/assets/fonts/involve/Involve_400.woff2) format('woff2');
+		url(/assets/fonts/involve/Involve_400.woff) format('woff'),
+		url(/assets/fonts/involve/Involve_400.woff2) format('woff2');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'Involve Medium';
 	src: url(/assets/fonts/involve/Involve_500.ttf) format('truetype'),
-	url(/assets/fonts/involve/Involve_500.woff) format('woff'),
-	url(/assets/fonts/involve/Involve_500.woff2) format('woff2');
+		url(/assets/fonts/involve/Involve_500.woff) format('woff'),
+		url(/assets/fonts/involve/Involve_500.woff2) format('woff2');
 	font-weight: 500;
 }
 
 @font-face {
 	font-family: 'Involve SemiBold';
 	src: url(/assets/fonts/involve/Involve_600.ttf) format('truetype'),
-	url(/assets/fonts/involve/Involve_600.woff) format('woff'),
-	url(/assets/fonts/involve/Involve_600.woff2) format('woff2');
+		url(/assets/fonts/involve/Involve_600.woff) format('woff'),
+		url(/assets/fonts/involve/Involve_600.woff2) format('woff2');
 	font-weight: 600;
 }
 
@@ -111,4 +118,20 @@
 		url(/assets/fonts/manrope/Manrope_500.woff) format('woff'),
 		url(/assets/fonts/manrope/Manrope_500.woff2) format('woff2');
 	font-weight: 500;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--bg-color);
+	background-image:
+		linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1)),
+		url(/assets/img/background_svg.svg);
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+	font-family: 'Involve', sans-serif;
+	color: var(--text-color);
 }

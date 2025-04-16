@@ -136,3 +136,12 @@ img {
 	color: var(--button-text-color);
 	height: 54px;
 }
+
+.connectWalletCustom {
+	min-width: 156px !important;
+	width: 100% !important;
+	background: var(--button-color);
+	color: var(--button-text-color);
+	border-radius: 14px;
+	height: 54px !important;
+}

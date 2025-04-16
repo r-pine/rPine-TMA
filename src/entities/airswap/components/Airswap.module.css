@@ -1,0 +1,57 @@
+.confirmButton {
+	font-family: 'Involve SemiBold';
+	font-size: 16px;
+	height: 54px;
+	width: 100%;
+	border-radius: 14px;
+	border: none;
+	background: var(--success-button);
+	color: var(--button-text-color);
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.error_message,
+.success_message {
+	text-align: center;
+	font-family: 'Manrope Light';
+	font-size: 18px;
+}
+
+.loading {
+	text-align: center;
+	padding: 20px;
+	color: var(--text-color);
+	font-family: 'Manrope Light';
+}
+
+.error_message {
+	color: #ff4444;
+	text-align: center;
+	padding: 10px;
+	margin-bottom: 10px;
+	font-family: 'Manrope Light';
+}
+
+.success_message {
+	color: #00C851;
+	text-align: center;
+	padding: 10px;
+	margin-bottom: 10px;
+	font-family: 'Manrope Light';
+}
+
+.button_container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.confirmButton:disabled {
+	background-color: var(--disabled-color);
+	cursor: not-allowed;
+}
+
+.confirmButton:hover:not(:disabled) {
+	background-color: var(--primary-hover-color);
+}

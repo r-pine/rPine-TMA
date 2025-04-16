@@ -1,0 +1,113 @@
+.modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	padding: 20px;
+}
+
+.modalContent {
+	background-color: var(--bg-color);
+	border-radius: 24px;
+	width: 90%;
+	max-width: 480px;
+	max-height: 90vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+}
+
+.modalHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0;
+}
+
+.modalTitle {
+	font-family: 'Manrope Medium';
+	font-size: 20px;
+	color: var(--header-color);
+	margin: 0;
+}
+
+.closeButton {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.closeIcon {
+	width: 24px;
+	height: 24px;
+}
+
+.modalBody {
+	overflow-y: auto;
+}
+
+.optionsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.selectionWrapper {
+	border: 1px solid var(--paragraph-text-color);
+	border-radius: 20px;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.optionHeader {
+	font-family: 'Manrope Light';
+	font-size: 18px;
+	margin: 0;
+	padding: 0;
+}
+
+.optionParagraph {
+	color: var(--paragraph-text-color);
+	margin: 0;
+	font-family: 'Manrope Light';
+	font-size: 14px;
+}
+
+.optionButton {
+	background: var(--success-button);
+	color: var(--header-color);
+	border: none;
+	border-radius: 14px;
+	padding: 16px;
+	font-family: 'Involve SemiBold', sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	transition: opacity 0.2s;
+	width: 100%;
+}
+
+.optionButton:hover {
+	opacity: 0.9;
+}

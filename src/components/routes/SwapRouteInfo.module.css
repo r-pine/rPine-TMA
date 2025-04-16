@@ -1,0 +1,112 @@
+.container {
+	margin-top: 16px;
+	padding: 16px;
+	background-color: var(--bg-container-color);
+}
+
+.exchangeRate {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 1rem;
+	font-family: 'Manrope Medium';
+	font-size: 14px;
+	color: var(--header-color);
+	text-align: center;
+}
+
+.routeInfo {
+	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	border: 1px solid var(--border-color);
+	border-radius: 20px;
+	padding: 14px;
+}
+
+.infoItem {
+	display: flex;
+	justify-content: space-between;
+	font-family: 'Manrope Light';
+	font-size: 12px;
+}
+
+.label {
+	color: var(--text-route-color);
+	font-size: 12px;
+	font-family: 'Manrope Normal';
+}
+
+.value {
+	color: var(--header-color);
+	font-size: 12px;
+	font-family: 'Manrope Normal';
+}
+
+.routesContainer {
+	border: 1px solid var(--border-color);
+	border-radius: 20px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.routesTitle {
+	font-family: 'Involve SemiBold';
+	font-size: 16px;
+	color: var(--header-color);
+	margin: 0 0 20px 0;
+}
+
+.routeNotFound {
+	font-family: 'Involve SemiBold';
+	font-size: 20px;
+	text-align: center;
+}
+
+.routeStep {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: var(--bg-modal-color);
+	position: relative;
+	margin-bottom: 8px;
+}
+
+.stepContainer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background-color: var(--button-connected-wallet);
+	position: relative;
+	z-index: 2;
+	padding: 4px 8px;
+	border-radius: 25px;
+	height: 20px;
+}
+
+.percent {
+	font-family: 'Manrope Medium';
+	font-size: 12px;
+	color: var(--text-ultramarine-color);
+	z-index: 2;
+	min-width: 40px;
+	text-align: center;
+}
+
+.strokeLine {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: calc(100% - 80px);
+	z-index: 1;
+}
+
+.dexImage,
+.assetImage {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}

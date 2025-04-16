@@ -1,0 +1,24 @@
+.swapButton {
+	width: 100%;
+	color: white;
+	border: none;
+	border-radius: 18px;
+	font-size: 16px;
+	cursor: pointer;
+	font-family: 'Involve SemiBold';
+	background: var(--success-button);
+	padding: 16px;
+
+}
+
+.swapButton:disabled {
+	background: var(--success-button);
+	cursor: not-allowed;
+	margin: 0;
+	opacity: 0.8;
+}
+
+.swapButton:hover:not(:disabled) {
+	background: var(--success-button);
+	opacity: 0.9;
+}

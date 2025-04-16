@@ -1,0 +1,33 @@
+.skeleton {
+	background: linear-gradient(90deg,
+			var(--bg-swap-block-color) 0%,
+			var(--border-button-color) 50%,
+			var(--bg-swap-block-color) 100%);
+	background-size: 200% 100%;
+	animation: shimmer 1s infinite;
+	border-radius: 4px;
+}
+
+.text {
+	border-radius: 4px;
+	height: 1em;
+	text-align: center;
+}
+
+.rect {
+	border-radius: 4px;
+}
+
+.circle {
+	border-radius: 50%;
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: 0% 0;
+	}
+
+	100% {
+		background-position: 200% 0;
+	}
+}
