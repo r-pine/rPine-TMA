@@ -5,7 +5,6 @@
 	padding: 4.6% 5.1%;
 	line-height: 1.5;
 	font-weight: 400;
-
 	color-scheme: light dark;
 	color: rgba(255, 255, 255, 0.87);
 	background-color: var(--bg-color);
@@ -123,10 +122,6 @@
 body {
 	margin: 0;
 	padding: 0;
-	background-color: var(--bg-color);
-	background-image:
-		linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 1)),
-		url(/assets/img/background_svg.svg);
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
@@ -134,4 +129,13 @@ body {
 	min-height: 100vh;
 	font-family: 'Involve', sans-serif;
 	color: var(--text-color);
+}
+
+body.tc-disable-scroll {
+	display: flex !important;
+	justify-content: center !important;
+}
+
+body.tc-disable-scroll :root {
+	position: relative !important;
 }

@@ -6,7 +6,7 @@ import styles from './NFTPage.module.css';
 import useTonWalletAddress from '../../entities/wallet/hooks/useWalletAddress.hook';
 import AvailableNFT from '../../components/UI/AvailableNFTAmount';
 import TonWalletConnect from '../../components/UI/TonWalletConnectButton/TonWalletConnect';
-import WalletBalance from '../../entities/wallet/components/WalletBalance';
+import WalletBalance from '../../components/WalletBalance/WalletBalance';
 import PopUpInfo from '../../components/UI/popUpInfo/PopUpInfo';
 import BuyNFTPopup from '../../components/UI/popUpBuyNFT/BuyNFTPopUp';
 import Footer from '../../widgets/footer/Footer';

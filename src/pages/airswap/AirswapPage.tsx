@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import AirswapTransaction from '../../entities/airswap/components/Airswap';
+import AirswapTransaction from '../../components/Airswap/Airswap';
 import styles from './AirswapPage.module.css';
 import { selectOpineBalance } from '../../store/wallet/selectors';
 import useTonWalletAddress from '../../entities/wallet/hooks/useWalletAddress.hook';

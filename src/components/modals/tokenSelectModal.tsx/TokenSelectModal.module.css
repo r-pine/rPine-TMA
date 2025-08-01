@@ -15,7 +15,6 @@
 	background: var(--bg-modal-color);
 	border-radius: 12px;
 	width: 20em;
-	height: 80vh;
 	padding: 20px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

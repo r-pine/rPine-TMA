@@ -1,0 +1,9 @@
+.maxTag {
+	border: 1px solid var(--bg-swap-block-color);
+	color: var(--header-color);
+	background: var(--max-amount-tag);
+	border-radius: 12px;
+	min-width: 40px;
+	text-align: center;
+	cursor: pointer;
+}

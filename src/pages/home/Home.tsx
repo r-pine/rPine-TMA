@@ -3,7 +3,7 @@ import TonWalletConnect from '../../components/UI/TonWalletConnectButton/TonWall
 import SwapHeader from '../../components/swapHeader/swapHeader';
 import { useWalletStore } from '../../store/wallet/useWalletStore';
 import { useTonConnectUI } from '@tonconnect/ui-react';
-import WalletBalance from '../../entities/wallet/components/WalletBalance';
+import WalletBalance from '../../components/WalletBalance/WalletBalance';
 import { Swap } from '../../components/swap/swap';
 import BuyNFTPromotion from '../../components/UI/buyNFTPromotion/BuyNFTPromotion';
 import { useDispatch, useSelector } from 'react-redux';

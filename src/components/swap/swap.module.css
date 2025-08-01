@@ -137,6 +137,7 @@
 
 .switchButton:active {
 	transform: translate(-50%, -50%) scale(0.95);
+	background-color: var(--bg-color);
 }
 
 .switchIcon {
@@ -151,12 +152,10 @@
 }
 
 
-/* Стили для контейнера с кнопкой Swap */
 .swapButtonContainer {
 	margin-top: 24px;
 }
 
-/* Стили для контейнера с информацией о маршруте */
 .routeInfoContainer {
 	width: 100%;
 }

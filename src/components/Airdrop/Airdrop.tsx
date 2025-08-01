@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import useAirdropTransaction from '../hooks/useAirdropTransactionHook';
+import useAirdropTransaction from '../../entities/airdrop/hooks/useAirdropTransactionHook';
 import styles from './Airdrop.module.css';
 import { useState } from 'react';
-import { Message } from '../types';
+import { Message } from '../../entities/airdrop/types';
 
 interface AirdropTransactionProps {
 	onConfirm: () => void;

@@ -22,15 +22,15 @@ export const TokenSelectModal: React.FC<TokenSelectModalProps> = ({
 	const { t } = useTranslation();
 
 	return (
-		<AnimatePresence>
+		<AnimatePresence mode="wait">
 			{isOpen && (
 				<div className={styles.modalOverlay} onClick={onClose}>
 					<div className={styles.modalContent} onClick={e => e.stopPropagation()}>
 						<motion.div
-							initial={{ opacity: 0, scale: 0.5 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.5 }}
-							transition={{ duration: 0.2 }}
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -20 }}
+							transition={{ duration: 0.3 }}
 						>
 							<div className={styles.modalHeader}>
 								<h2 className={styles.modalTitle}>{t('jetton_search')}</h2>

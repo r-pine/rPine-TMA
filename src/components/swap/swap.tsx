@@ -12,22 +12,13 @@ import { selectUserAssets } from '../../store/assets/selectors';
 import { normalizeAssetName } from '../../entities/assets/model/utils';
 import styles from './swap.module.css';
 import { SwapRouteInfo } from '../routes/SwapRouteInfo';
-import { SwapTokenButton } from '../../entities/transactions/components/swapTokenButton.tsx/SwapTokenButton';
+import { SwapTokenButton } from './SwapTokenButton/SwapTokenButton';
 import { useWallet } from '../../store/wallet/hooks';
 import { selectForceRefresh } from '../../store/swapRoutes/selectors';
 import { setIntervalActive } from '../../store/swapRoutes/slice';
+import { formatBalance } from '../../shared/utils/formatBalance';
+import { MaxValueExchangeButton } from '../MaxValueExchangeButton/MaxValueExchangeButton';
 
-const formatBalance = (balance: string, decimals: number): string => {
-	try {
-		const num = parseFloat(balance);
-		if (isNaN(num) || num < 0) {
-			return '0.00';
-		}
-		return (num / 10 ** decimals).toFixed(2);
-	} catch (e) {
-		return '0.00';
-	}
-};
 
 export const Swap: React.FC = () => {
 
@@ -37,9 +28,7 @@ export const Swap: React.FC = () => {
 	const userAssets = useSelector(selectUserAssets);
 	const { address } = useWallet();
 	const {
-
 		outputAssetAmount,
-
 		inputAssetUsdAmount,
 		outputAssetUsdAmount,
 		loading: swapLoading,
@@ -291,7 +280,7 @@ export const Swap: React.FC = () => {
 									? getAssetBalance(selectedInputAsset)
 									: formatBalance(getAssetBalance(selectedInputAsset), selectedInputAsset.decimals)
 								} {selectedInputAsset.symbol}
-								<span className={styles.maxTag}>MAX</span>
+								<MaxValueExchangeButton />
 							</div>
 						)}
 					</div>

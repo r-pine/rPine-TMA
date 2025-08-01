@@ -53,7 +53,7 @@ const BuyNFTPopup = () => {
 				whileTap={{ scale: 0.95 }}>
 				{t('buy_NFT_button')}
 			</motion.button>
-			<AnimatePresence>
+			<AnimatePresence mode="wait">
 				{isOpen && (
 					<ReactModal
 						isOpen={isOpen}
@@ -63,10 +63,10 @@ const BuyNFTPopup = () => {
 					>
 						{isOpen && (
 							<motion.div
-								initial={{ opacity: 0, scale: 0.5 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.5 }}
-								transition={{ duration: 0.2 }}
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -20 }}
+								transition={{ duration: 0.3 }}
 							>
 								<div className={styles.popup_buy_container}>
 									{!isConfirmed && <p className={styles.paragraph}>{t('buy_NFT_confirmation')}</p>}

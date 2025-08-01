@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import * as motion from 'motion/react-client';
-import { RootState } from '../../../../store/store';
-import { useWalletStore } from '../../../../store/wallet/useWalletStore';
+import { RootState } from '../../../store/store';
+import { useWalletStore } from '../../../store/wallet/useWalletStore';
 import { useTonConnectUI } from '@tonconnect/ui-react';
-import { sendTransaction } from '../../api/transactions.api';
+import { sendTransaction } from '../../../entities/transactions/api/transactions.api';
 import { useTranslation } from 'react-i18next';
 import styles from './SwapTokenButton.module.css';
 

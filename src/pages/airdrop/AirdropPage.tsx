@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import AirdropTransaction from '../../entities/airdrop/components/Airdrop';
+import AirdropTransaction from '../../components/Airdrop/Airdrop';
 import styles from './AirdropPage.module.css';
 import { selectApineBalance } from '../../store/wallet/selectors';
 import useTonWalletAddress from '../../entities/wallet/hooks/useWalletAddress.hook';
