@@ -1,4 +1,4 @@
-.maxTag {
+.maxAmountButton {
 	border: 1px solid var(--bg-swap-block-color);
 	color: var(--header-color);
 	background: var(--max-amount-tag);
@@ -6,4 +6,5 @@
 	min-width: 40px;
 	text-align: center;
 	cursor: pointer;
+	font-size: 12px;
 }

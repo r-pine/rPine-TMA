@@ -37,7 +37,6 @@ export const Swap: React.FC = () => {
 		setOutputAsset,
 		loadRoute,
 		resetOutputAmount,
-		cancelActiveRequest,
 		cancelActiveRequestOnly,
 		route
 	} = useSwapRoutes();
@@ -267,6 +266,14 @@ export const Swap: React.FC = () => {
 		console.log('Swap transaction initiated');
 	};
 
+	const handleMaxClick = () => {
+		if (selectedInputAsset) {
+			const maxBalance = getAssetBalance(selectedInputAsset);
+			setInputValue(maxBalance);
+			setHasInput(!!maxBalance);
+		}
+	};
+
 
 	return (
 		<div className={styles.swapContainer}>
@@ -307,7 +314,7 @@ export const Swap: React.FC = () => {
 									? getAssetBalance(selectedInputAsset)
 									: formatBalance(getAssetBalance(selectedInputAsset), selectedInputAsset.decimals)
 								} {selectedInputAsset.symbol}
-								<MaxValueExchangeButton />
+								<MaxValueExchangeButton onMaxClick={handleMaxClick} />
 							</div>
 						)}
 					</div>
