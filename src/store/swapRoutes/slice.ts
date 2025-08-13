@@ -76,6 +76,14 @@ const swapRoutesSlice = createSlice({
 			state.inputAssetUsdAmount = null;
 			state.outputAssetUsdAmount = null;
 		},
+		resetRouteData: (state) => {
+			state.route = null;
+			state.exchangeRate = null;
+			state.outputAssetAmount = '';
+			state.inputAssetUsdAmount = null;
+			state.outputAssetUsdAmount = null;
+			state.error = null;
+		},
 		setError: (state, action: PayloadAction<string | null>) => {
 			state.error = action.payload;
 		},
@@ -111,6 +119,7 @@ export const {
 	setExchangeData,
 	setLoading,
 	resetOutputAmount,
+	resetRouteData,
 	setError,
 	resetSwapState,
 	setForceRefresh,

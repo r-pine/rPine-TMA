@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { Route } from '../../store/swapRoutes/types';
-import { Skeleton } from '../../shared/ui/Skeleton';
 import { useTranslation } from 'react-i18next';
 import styles from './SwapRouteInfo.module.css';
 
@@ -11,21 +10,51 @@ const selectRoute = (state: RootState) => state.swapRoutes.route;
 
 interface SwapRouteInfoProps {
 	hasInput: boolean;
-	showSkeleton: boolean;
 }
 
-export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput, showSkeleton }) => {
+export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 	const exchangeRate = useSelector(selectExchangeRate);
 	const route = useSelector(selectRoute);
 	const { t } = useTranslation();
+
+	const [isDataVisible, setIsDataVisible] = useState(false);
+	const [isUpdating, setIsUpdating] = useState(false);
+	const [previousData, setPreviousData] = useState<any>(null);
+
+	useEffect(() => {
+		if (route?.displayData) {
+			if (isDataVisible) {
+				// Если данные уже были видны, показываем состояние обновления
+				// Сохраняем предыдущие данные для плавного перехода
+				setPreviousData(route.displayData);
+				setIsUpdating(true);
+				const timer = setTimeout(() => {
+					setIsUpdating(false);
+				}, 150);
+				return () => clearTimeout(timer);
+			} else {
+				// Первое появление данных
+				setIsDataVisible(true);
+				setPreviousData(route.displayData);
+			}
+		} else {
+			// Если route данных нет, сбрасываем состояния анимации
+			setIsDataVisible(false);
+			setIsUpdating(false);
+			setPreviousData(null);
+		}
+		// Убираем else блок - компонент остается видимым после первого появления
+	}, [route?.displayData, isDataVisible]);
 
 	if (!hasInput) {
 		return null;
 	}
 
-	const displayData = route?.displayData;
+	const displayData = route?.displayData || previousData;
 
-	if (!displayData && !showSkeleton) {
+	// Показываем компонент если есть hasInput, даже если данных еще нет
+	// Это позволит плавно появиться при первом получении данных
+	if (!displayData && !isDataVisible) {
 		return null;
 	}
 
@@ -38,49 +67,35 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput, showSkel
 
 	return (
 		<div className={styles.container}>
-			{showSkeleton ? (
-				<div className={styles.exchangeRate}>
-					<Skeleton width={200} height={20} />
-				</div>
-			) : hasRoutes && exchangeRate && (
-				<div className={styles.exchangeRate}>
+			{hasRoutes && exchangeRate && (
+				<div className={`${styles.exchangeRate} ${isDataVisible ? styles.visible : ''} ${isUpdating ? styles.updating : ''}`}>
 					1 {inputSymbol} = {exchangeRate.toFixed(6)} {outputSymbol}
 				</div>
 			)}
 			<div className={styles.borderContainer}>
-				<div className={styles.routeInfo}>
+				<div className={`${styles.routeInfo} ${isDataVisible ? styles.visible : ''} ${isUpdating ? styles.updating : ''}`}>
 					<div className={styles.infoItem}>
 						<span className={styles.label}>{t('route_max_slippage')}</span>
-						{showSkeleton ? (
-							<Skeleton width={80} height={20} />
-						) : (
-							<span className={styles.value}>{displayData?.maxSlippage?.toFixed(2) ?? '0.00'}%</span>
-						)}
+						<span className={`${styles.value} ${isUpdating ? styles.updating : ''}`}>
+							{displayData?.maxSlippage?.toFixed(2) ?? '0.00'}%
+						</span>
 					</div>
 					<div className={styles.infoItem}>
 						<span className={styles.label}>{t('recieve_tokens_text')}</span>
-						{showSkeleton ? (
-							<Skeleton width={120} height={20} />
-						) : (
-							<span className={styles.value}>{displayData?.minOutputAssetAmount ?? '0'} {outputSymbol}</span>
-						)}
+						<span className={`${styles.value} ${isUpdating ? styles.updating : ''}`}>
+							{displayData?.minOutputAssetAmount ?? '0'} {outputSymbol}
+						</span>
 					</div>
 					<div className={styles.infoItem}>
 						<span className={styles.label}>{t('fee_swap_text')}</span>
-						{showSkeleton ? (
-							<Skeleton width={60} height={20} />
-						) : (
-							<span className={styles.value}>{displayData?.routingFeePercent?.toFixed(2) ?? '0.00'}%</span>
-						)}
+						<span className={`${styles.value} ${isUpdating ? styles.updating : ''}`}>
+							{displayData?.routingFeePercent?.toFixed(2) ?? '0.00'}%
+						</span>
 					</div>
 				</div>
-				<div className={styles.routesContainer}>
+				<div className={`${styles.routesContainer} ${isDataVisible ? styles.visible : ''} ${isUpdating ? styles.updating : ''}`}>
 					{hasRoutes && <h3 className={styles.routesTitle}>{t('route_text')}</h3>}
-					{showSkeleton ? (
-						<div className={styles.routeItem}>
-							<Skeleton width="100%" height={60} />
-						</div>
-					) : !hasRoutes ? (
+					{!hasRoutes ? (
 						<div className={styles.routeNotFound}>{t('route_not_found')}</div>
 					) : displayData?.routes?.map((route: Route, index: number) => (
 						<div key={index} className={styles.routeItem}>

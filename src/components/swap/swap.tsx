@@ -15,10 +15,10 @@ import { SwapRouteInfo } from '../routes/SwapRouteInfo';
 import { SwapTokenButton } from './SwapTokenButton/SwapTokenButton';
 import { useWallet } from '../../store/wallet/hooks';
 import { selectForceRefresh } from '../../store/swapRoutes/selectors';
-import { setIntervalActive } from '../../store/swapRoutes/slice';
+import { setIntervalActive, resetRouteData } from '../../store/swapRoutes/slice';
 import { formatBalance } from '../../shared/utils/formatBalance';
 import { MaxValueExchangeButton } from '../MaxValueExchangeButton/MaxValueExchangeButton';
-
+import Footer from '../../widgets/footer/Footer';
 
 export const Swap: React.FC = () => {
 
@@ -38,6 +38,7 @@ export const Swap: React.FC = () => {
 		loadRoute,
 		resetOutputAmount,
 		cancelActiveRequest,
+		cancelActiveRequestOnly,
 		route
 	} = useSwapRoutes();
 	const forceRefresh = useSelector(selectForceRefresh);
@@ -53,10 +54,37 @@ export const Swap: React.FC = () => {
 	const debouncedInputValue = useDebounce(inputValue, 300);
 	const [updateInterval, setUpdateInterval] = useState<number | null>(null);
 
+	// Состояния для плавных переходов
+	const [isOutputVisible, setIsOutputVisible] = useState(false);
+	const [isOutputUpdating, setIsOutputUpdating] = useState(false);
+	const [prevOutputAmount, setPrevOutputAmount] = useState<string>('');
+
 	const { t } = useTranslation();
 
 	const tonAsset = assets.find((asset) => asset.symbol === 'TON');
 	const usdtAsset = assets.find((asset) => asset.symbol === 'USDT');
+
+	// Эффект для плавных переходов output amount
+	useEffect(() => {
+		if (outputAssetAmount && outputAssetAmount !== '') {
+			if (isOutputVisible && prevOutputAmount !== outputAssetAmount) {
+				// Если данные уже были видны и изменились, показываем состояние обновления
+				setIsOutputUpdating(true);
+				setPrevOutputAmount(outputAssetAmount);
+				const timer = setTimeout(() => {
+					setIsOutputUpdating(false);
+				}, 150);
+				return () => clearTimeout(timer);
+			} else if (!isOutputVisible) {
+				// Первое появление данных
+				setIsOutputVisible(true);
+				setPrevOutputAmount(outputAssetAmount);
+			}
+		} else {
+			setIsOutputVisible(false);
+			setIsOutputUpdating(false);
+		}
+	}, [outputAssetAmount, isOutputVisible, prevOutputAmount]);
 
 	const getAssetBalance = useCallback((asset: Asset | null) => {
 		if (!asset) return '0';
@@ -93,18 +121,13 @@ export const Swap: React.FC = () => {
 				inputAssetAddress: selectedInputAsset.address,
 				outputAssetAddress: selectedOutputAsset.address,
 			});
-		} else {
-			if (updateInterval) {
-				clearInterval(updateInterval);
-				setUpdateInterval(null);
-			}
-			setAmount('');
-			resetOutputAmount();
 		}
+		// Убираем else блок полностью - очистка данных происходит только в handleInputAmountChange
+		// при полном стирании поля
 	}, [debouncedInputValue, selectedInputAsset, selectedOutputAsset]);
 
 	useEffect(() => {
-		if (route && !swapLoading && debouncedInputValue && selectedInputAsset?.address && selectedOutputAsset?.address) {
+		if (route && debouncedInputValue && selectedInputAsset?.address && selectedOutputAsset?.address) {
 			if (updateInterval) {
 				clearInterval(updateInterval);
 			}
@@ -115,7 +138,7 @@ export const Swap: React.FC = () => {
 					inputAssetAddress: selectedInputAsset.address,
 					outputAssetAddress: selectedOutputAsset.address,
 				});
-			}, 5000);
+			}, 20000);
 
 			setUpdateInterval(interval);
 			dispatch(setIntervalActive(true));
@@ -127,7 +150,7 @@ export const Swap: React.FC = () => {
 				dispatch(setIntervalActive(false));
 			};
 		}
-	}, [route, swapLoading, debouncedInputValue, selectedInputAsset, selectedOutputAsset]);
+	}, [route, debouncedInputValue, selectedInputAsset, selectedOutputAsset]);
 
 	useEffect(() => {
 		return () => {
@@ -177,7 +200,7 @@ export const Swap: React.FC = () => {
 			value = value.substring(1);
 		}
 
-		cancelActiveRequest();
+		cancelActiveRequestOnly(); // Возвращаем обратно - нужен для отмены активных запросов
 		setInputValue(value);
 		setHasInput(!!value);
 
@@ -189,6 +212,8 @@ export const Swap: React.FC = () => {
 			setAmount('');
 			resetOutputAmount();
 			dispatch(setIntervalActive(false));
+			// Очищаем route данные когда поле пустое
+			dispatch(resetRouteData());
 		}
 	};
 
@@ -221,11 +246,13 @@ export const Swap: React.FC = () => {
 	};
 
 	const displayOutputAmount = () => {
-		if (swapLoading || outputAssetAmount === '') {
-			return '0.00';
+		// Если есть данные в outputAssetAmount, показываем их даже во время загрузки
+		if (outputAssetAmount && outputAssetAmount !== '') {
+			const num = parseFloat(outputAssetAmount);
+			return num.toFixed(2);
 		}
-		const num = parseFloat(outputAssetAmount);
-		return num.toFixed(2);
+		// Если данных нет, показываем 0.00
+		return '0.00';
 	};
 
 	const isBalanceExceeded = () => {
@@ -270,7 +297,7 @@ export const Swap: React.FC = () => {
 					</div>
 
 					<div className={styles.balanceAmount}>
-						<div className={styles.usdAmount}>
+						<div className={`${styles.usdAmount} ${isOutputVisible ? styles.visible : ''} ${isOutputUpdating ? styles.updating : ''}`}>
 							${swapLoading ? '0.00' : (inputAssetUsdAmount?.toFixed(2) || '0.00')}
 						</div>
 
@@ -303,7 +330,7 @@ export const Swap: React.FC = () => {
 							type="text"
 							value={displayOutputAmount()}
 							readOnly
-							className={`${styles.amountInput} ${swapLoading ? styles.loading : ''}`}
+							className={`${styles.amountInput} ${swapLoading ? styles.loading : ''} ${isOutputVisible ? styles.visible : ''} ${isOutputUpdating ? styles.updating : ''}`}
 							disabled={assetsLoading || !selectedOutputAsset}
 							lang="en"
 						/>
@@ -315,7 +342,7 @@ export const Swap: React.FC = () => {
 					</div>
 
 					<div className={styles.balanceAmount}>
-						<div className={styles.usdAmount}>
+						<div className={`${styles.usdAmount} ${isOutputVisible ? styles.visible : ''} ${isOutputUpdating ? styles.updating : ''}`}>
 							${swapLoading ? '0.00' : (outputAssetUsdAmount?.toFixed(2) || '0.00')}
 						</div>
 						{selectedOutputAsset && (
@@ -337,7 +364,6 @@ export const Swap: React.FC = () => {
 			<div className={styles.routeInfoContainer}>
 				<SwapRouteInfo
 					hasInput={hasInput}
-					showSkeleton={!!inputValue && (swapLoading || !route || !route.displayData)}
 				/>
 			</div>
 
@@ -354,6 +380,7 @@ export const Swap: React.FC = () => {
 				onSelect={handleOutputAssetSelect}
 				excludeAsset={selectedInputAsset}
 			/>
+			<Footer />
 		</div>
 	);
 };

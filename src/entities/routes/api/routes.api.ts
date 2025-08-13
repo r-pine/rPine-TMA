@@ -15,32 +15,59 @@ export interface RouteRequestOptions {
 	senderAddress?: string;
 }
 
+export interface RouteResponse {
+	success: boolean;
+	data?: ExchangeData;
+	error?: string;
+	statusCode?: number;
+}
+
 export const fetchBestRoute = async (
 	inputAssetAmount: string,
 	inputAssetAddress: string,
 	outputAssetAddress: string,
 	options?: RouteRequestOptions
-): Promise<ExchangeData> => {
+): Promise<RouteResponse> => {
 	try {
 		if (!inputAssetAmount || !inputAssetAddress || !outputAssetAddress) {
-			throw new Error('Missing required parameters for route request');
+			return {
+				success: false,
+				error: 'Missing required parameters for route request'
+			};
 		}
+
 		const url = `${SWAP_ROUTE_URL}/best-route?inputAssetAmount=${inputAssetAmount}&inputAssetAddress=${inputAssetAddress}&outputAssetAddress=${outputAssetAddress}${options?.maxDepth ? `&maxDepth=${options.maxDepth}` : ''}${options?.maxSplits ? `&maxSplits=${options.maxSplits}` : ''}${options?.maxSlippage ? `&maxSlippage=${options.maxSlippage}` : ''}${options?.senderAddress ? `&senderAddress=${options.senderAddress}` : ''}`;
+
 		const response = await fetch(url, {
 			signal: options?.signal,
 		});
 
 		if (!response.ok) {
-			throw new Error('Failed to fetch best route');
+			return {
+				success: false,
+				error: `Server error: ${response.status} ${response.statusText}`,
+				statusCode: response.status
+			};
 		}
+
 		const data = await response.json();
-		return data;
+		return {
+			success: true,
+			data: data
+		};
 	} catch (error: any) {
 		if (error.name === 'AbortError') {
 			console.log('Request aborted');
-			return Promise.reject(error);
+			return {
+				success: false,
+				error: 'Request aborted'
+			};
 		}
+
 		console.error('Error fetching best route:', error);
-		throw error;
+		return {
+			success: false,
+			error: error.message || 'Network error occurred'
+		};
 	}
 };

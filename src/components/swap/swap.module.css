@@ -49,6 +49,7 @@
 	color: var(--header-color);
 	background-color: var(--bg-swap-block-color);
 	border: none;
+	transition: all 0.3s ease-out;
 }
 
 .amountInput::placeholder {
@@ -58,6 +59,16 @@
 
 .amountInput.balanceExceeded {
 	color: #ff3b30;
+}
+
+.amountInput.updating {
+	opacity: 0.7;
+	transition: opacity 0.2s ease-out;
+}
+
+.amountInput.visible {
+	opacity: 1;
+	transition: opacity 0.3s ease-out;
 }
 
 .tokenSelectorButton {
@@ -77,6 +88,17 @@
 .usdAmount {
 	color: var(--text-color);
 	font-size: 14px;
+	transition: all 0.3s ease-out;
+}
+
+.usdAmount.updating {
+	opacity: 0.7;
+	transition: opacity 0.2s ease-out;
+}
+
+.usdAmount.visible {
+	opacity: 1;
+	transition: opacity 0.3s ease-out;
 }
 
 .balanceInfo {
@@ -146,11 +168,9 @@
 	color: #666;
 }
 
-
 .loading {
 	opacity: 0.7;
 }
-
 
 .swapButtonContainer {
 	margin-top: 24px;

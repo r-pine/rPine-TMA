@@ -8,7 +8,6 @@ import {
 	setError,
 	resetSwapState,
 	setLoading,
-	setRoute,
 } from './slice';
 import { FetchRouteParams } from './types';
 import { RootState } from '../store';
@@ -22,7 +21,6 @@ export const fetchRoute = createAsyncThunk(
 		try {
 			dispatch(setLoading(true));
 			dispatch(setError(null));
-			dispatch(setRoute(null));
 
 			const { inputAssetAmount, inputAssetAddress, outputAssetAddress, signal } = params;
 
@@ -37,7 +35,7 @@ export const fetchRoute = createAsyncThunk(
 			const swapSettings = selectSwapSettingsForApi(state);
 			const userAddress = selectWalletAddress(state);
 
-			const routeData = await fetchBestRoute(
+			const routeResponse = await fetchBestRoute(
 				inputAssetAmount,
 				inputAssetAddress,
 				outputAssetAddress,
@@ -54,18 +52,24 @@ export const fetchRoute = createAsyncThunk(
 				return;
 			}
 
-			dispatch(setInputAssetAmount(inputAssetAmount));
-			dispatch(setInputAssetAddress(inputAssetAddress));
-			dispatch(setOutputAssetAddress(outputAssetAddress));
-			dispatch(setExchangeData(routeData));
-
-			return routeData;
+			if (routeResponse.success && routeResponse.data) {
+				dispatch(setInputAssetAmount(inputAssetAmount));
+				dispatch(setInputAssetAddress(inputAssetAddress));
+				dispatch(setOutputAssetAddress(outputAssetAddress));
+				dispatch(setExchangeData(routeResponse.data));
+				return routeResponse.data;
+			} else {
+				console.warn('Route fetch failed, will retry:', routeResponse.error);
+				dispatch(setError(routeResponse.error || 'Route fetch failed, retrying...'));
+				return null;
+			}
 		} catch (error: any) {
 			if (error.name === 'AbortError') {
 				return;
 			}
-			dispatch(setError(error.message || 'Failed to fetch route'));
-			throw error;
+			console.error('Unexpected error in fetchRoute:', error);
+			dispatch(setError('Unexpected error, retrying...'));
+			return null;
 		} finally {
 			dispatch(setLoading(false));
 		}

@@ -20,6 +20,7 @@ import {
 	setOutputAssetAddress,
 	setLoading,
 	resetOutputAmount as resetOutput,
+	setError,
 } from './slice';
 import { useRef } from 'react';
 import { FetchRouteParams } from './types';
@@ -49,7 +50,8 @@ export const useSwapRoutes = () => {
 			abortControllerRef.current.abort();
 			abortControllerRef.current = null;
 			dispatch(setLoading(false));
-			dispatch(resetOutput());
+			// НЕ очищаем output данные при отмене запроса - они должны сохраняться до получения новых
+			// dispatch(resetOutput());
 		}
 		dispatch(setInputAssetAddress(address));
 	};
@@ -59,7 +61,8 @@ export const useSwapRoutes = () => {
 			abortControllerRef.current.abort();
 			abortControllerRef.current = null;
 			dispatch(setLoading(false));
-			dispatch(resetOutput());
+			// НЕ очищаем output данные при отмене запроса - они должны сохраняться до получения новых
+			// dispatch(resetOutput());
 		}
 		dispatch(setOutputAssetAddress(address));
 	};
@@ -77,6 +80,15 @@ export const useSwapRoutes = () => {
 		}
 	};
 
+	const cancelActiveRequestOnly = () => {
+		if (abortControllerRef.current) {
+			abortControllerRef.current.abort();
+			abortControllerRef.current = null;
+			dispatch(setLoading(false));
+			// НЕ очищаем данные - только отменяем запрос
+		}
+	};
+
 	const loadRoute = (params: Omit<FetchRouteParams, 'signal'>) => {
 		if (!params.inputAssetAmount || params.inputAssetAmount === '0') {
 			dispatch(setLoading(false));
@@ -88,7 +100,7 @@ export const useSwapRoutes = () => {
 			abortControllerRef.current.abort();
 			abortControllerRef.current = null;
 			dispatch(setLoading(false));
-			dispatch(resetOutput());
+
 		}
 
 		abortControllerRef.current = new AbortController();
@@ -97,14 +109,20 @@ export const useSwapRoutes = () => {
 		dispatch(setLoading(true));
 
 		dispatch(fetchRoute({ ...params, signal }))
-			.then(() => {
-				dispatch(setLoading(false));
+			.then((result) => {
+				// Не останавливаем загрузку при ошибках, позволяем интервалу продолжать работу
+				if (result) {
+					// Если есть результат, сбрасываем ошибку
+					dispatch(setError(null));
+				}
 			})
 			.catch((error) => {
 				if (error.name === 'AbortError') {
 					dispatch(setLoading(false));
-					dispatch(resetOutput());
+					// НЕ очищаем output данные при AbortError - они должны сохраняться
+					// dispatch(resetOutput());
 				}
+				// При других ошибках не останавливаем загрузку
 			})
 			.finally(() => {
 				abortControllerRef.current = null;
@@ -131,6 +149,7 @@ export const useSwapRoutes = () => {
 		loadRoute,
 		resetOutputAmount,
 		cancelActiveRequest,
+		cancelActiveRequestOnly,
 		reset,
 	};
 };

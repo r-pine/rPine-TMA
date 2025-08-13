@@ -13,6 +13,19 @@
 	font-size: 14px;
 	color: var(--header-color);
 	text-align: center;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: all 0.4s ease-out;
+}
+
+.exchangeRate.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.exchangeRate.updating {
+	opacity: 0.7;
+	transition: opacity 0.2s ease-out;
 }
 
 .routeInfo {
@@ -23,6 +36,19 @@
 	border: 1px solid var(--border-color);
 	border-radius: 20px;
 	padding: 14px;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: all 0.4s ease-out;
+}
+
+.routeInfo.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.routeInfo.updating {
+	opacity: 0.7;
+	transition: opacity 0.2s ease-out;
 }
 
 .infoItem {
@@ -42,6 +68,12 @@
 	color: var(--header-color);
 	font-size: 12px;
 	font-family: 'Manrope Normal';
+	transition: opacity 0.3s ease-out;
+}
+
+.value.updating {
+	opacity: 0.7;
+	transition: opacity 0.2s ease-out;
 }
 
 .routesContainer {
@@ -50,6 +82,19 @@
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: all 0.4s ease-out;
+}
+
+.routesContainer.visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.routesContainer.updating {
+	opacity: 0.7;
+	transition: opacity 0.2s ease-out;
 }
 
 .routesTitle {
