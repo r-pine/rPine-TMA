@@ -13,6 +13,8 @@ import {
 import { FetchRouteParams } from './types';
 import { RootState } from '../store';
 import { selectSwapSettingsForApi } from '../settings/selectors';
+import { selectWalletAddress } from '../wallet/selectors';
+import { convertToUserFriendlyAddress } from '../../shared/utils/addressUtils';
 
 export const fetchRoute = createAsyncThunk(
 	'swapRoutes/fetchRoute',
@@ -33,6 +35,7 @@ export const fetchRoute = createAsyncThunk(
 			}
 			const state = getState() as RootState;
 			const swapSettings = selectSwapSettingsForApi(state);
+			const userAddress = selectWalletAddress(state);
 
 			const routeData = await fetchBestRoute(
 				inputAssetAmount,
@@ -42,7 +45,8 @@ export const fetchRoute = createAsyncThunk(
 					signal,
 					maxDepth: swapSettings.maxDepth,
 					maxSplits: swapSettings.maxSplits,
-					maxSlippage: swapSettings.maxSlippage
+					maxSlippage: swapSettings.maxSlippage,
+					senderAddress: userAddress ? convertToUserFriendlyAddress(userAddress) : undefined
 				}
 			);
 
