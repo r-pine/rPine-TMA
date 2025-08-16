@@ -8,7 +8,10 @@
 	font-family: 'Involve SemiBold';
 	background: var(--success-button);
 	padding: 16px;
-
+	min-height: 54px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .swapButton:disabled {

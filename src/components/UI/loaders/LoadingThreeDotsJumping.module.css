@@ -1,0 +1,17 @@
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	height: 20px;
+	width: 100%;
+}
+
+.dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: #ffffff;
+	will-change: transform;
+	opacity: 0.9;
+}

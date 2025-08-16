@@ -96,7 +96,10 @@ export const useSwapRoutes = () => {
 			return;
 		}
 
+		console.log('loadRoute called with params:', params);
+
 		if (abortControllerRef.current) {
+			console.log('Aborting previous request...');
 			abortControllerRef.current.abort();
 			abortControllerRef.current = null;
 			dispatch(setLoading(false));
@@ -106,25 +109,35 @@ export const useSwapRoutes = () => {
 		abortControllerRef.current = new AbortController();
 		const signal = abortControllerRef.current.signal;
 
+		console.log('Starting new request...');
 		dispatch(setLoading(true));
 
 		dispatch(fetchRoute({ ...params, signal }))
 			.then((result) => {
+				console.log('fetchRoute result:', result);
 				// Не останавливаем загрузку при ошибках, позволяем интервалу продолжать работу
 				if (result) {
 					// Если есть результат, сбрасываем ошибку
 					dispatch(setError(null));
 				}
+				// При ошибке (result === null) не делаем ничего - ошибка уже установлена в thunk
+				// и интервал продолжит работать
 			})
 			.catch((error) => {
+				console.log('fetchRoute error:', error);
 				if (error.name === 'AbortError') {
 					dispatch(setLoading(false));
 					// НЕ очищаем output данные при AbortError - они должны сохраняться
 					// dispatch(resetOutput());
+				} else {
+					// При других ошибках логируем, но не останавливаем работу
+					console.warn('Error in loadRoute:', error);
+					// Не вызываем dispatch(setLoading(false)) - пусть loading остается true
+					// чтобы интервал не отправлял новые запросы до завершения текущего
 				}
-				// При других ошибках не останавливаем загрузку
 			})
 			.finally(() => {
+				console.log('fetchRoute finally - clearing abort controller');
 				abortControllerRef.current = null;
 			});
 	};

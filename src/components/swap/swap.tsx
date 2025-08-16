@@ -15,7 +15,7 @@ import { SwapRouteInfo } from '../routes/SwapRouteInfo';
 import { SwapTokenButton } from './SwapTokenButton/SwapTokenButton';
 import { useWallet } from '../../store/wallet/hooks';
 import { selectForceRefresh } from '../../store/swapRoutes/selectors';
-import { setIntervalActive, resetRouteData } from '../../store/swapRoutes/slice';
+import { setIntervalActive, resetRouteData, setLoading } from '../../store/swapRoutes/slice';
 import { formatBalance } from '../../shared/utils/formatBalance';
 import { MaxValueExchangeButton } from '../MaxValueExchangeButton/MaxValueExchangeButton';
 import Footer from '../../widgets/footer/Footer';
@@ -113,6 +113,7 @@ export const Swap: React.FC = () => {
 
 	useEffect(() => {
 		if (debouncedInputValue && debouncedInputValue !== '0' && selectedInputAsset && selectedOutputAsset) {
+			// Если есть значение, устанавливаем его и запускаем запрос
 			setAmount(debouncedInputValue);
 
 			loadRoute({
@@ -120,23 +121,56 @@ export const Swap: React.FC = () => {
 				inputAssetAddress: selectedInputAsset.address,
 				outputAssetAddress: selectedOutputAsset.address,
 			});
+		} else if (debouncedInputValue === '' || debouncedInputValue === '0') {
+			// Если значение пустое или 0, очищаем данные с задержкой debounce
+			console.log('Debounced input is empty, clearing data');
+			setAmount('');
+			resetOutputAmount();
+			// Очищаем route данные когда поле пустое
+			dispatch(resetRouteData());
 		}
-		// Убираем else блок полностью - очистка данных происходит только в handleInputAmountChange
-		// при полном стирании поля
 	}, [debouncedInputValue, selectedInputAsset, selectedOutputAsset]);
 
 	useEffect(() => {
+		// Запускаем интервал только когда есть route (т.е. уже был первый успешный запрос)
+		// и все необходимые данные
 		if (route && debouncedInputValue && selectedInputAsset?.address && selectedOutputAsset?.address) {
 			if (updateInterval) {
 				clearInterval(updateInterval);
 			}
 
+			const startNextRequest = () => {
+				// Проверяем, что запрос не в процессе выполнения
+				if (!swapLoading) {
+					console.log('Starting interval request:', {
+						inputAssetAmount: debouncedInputValue,
+						inputAssetAddress: selectedInputAsset.address,
+						outputAssetAddress: selectedOutputAsset.address,
+						swapLoading
+					});
+					loadRoute({
+						inputAssetAmount: debouncedInputValue,
+						inputAssetAddress: selectedInputAsset.address,
+						outputAssetAddress: selectedOutputAsset.address,
+					});
+				} else {
+					console.log('Skipping request - already loading:', { swapLoading });
+				}
+			};
+
+			// НЕ делаем первый запрос сразу - он уже был сделан в useEffect для debouncedInputValue
+			// startNextRequest();
+
+			// Запросы через 20 секунд после завершения предыдущего
 			const interval = setInterval(() => {
-				loadRoute({
-					inputAssetAmount: debouncedInputValue,
-					inputAssetAddress: selectedInputAsset.address,
-					outputAssetAddress: selectedOutputAsset.address,
-				});
+				console.log('Interval triggered, checking if can send next request...');
+				// Если запрос завис (loading слишком долго), принудительно сбрасываем
+				if (swapLoading) {
+					console.warn('Request seems stuck, forcing reset...');
+					// Принудительно сбрасываем loading состояние
+					dispatch(setLoading(false));
+				}
+				startNextRequest();
 			}, 20000);
 
 			setUpdateInterval(interval);
@@ -149,7 +183,7 @@ export const Swap: React.FC = () => {
 				dispatch(setIntervalActive(false));
 			};
 		}
-	}, [route, debouncedInputValue, selectedInputAsset, selectedOutputAsset]);
+	}, [route, debouncedInputValue, selectedInputAsset, selectedOutputAsset, swapLoading]);
 
 	useEffect(() => {
 		return () => {
@@ -199,21 +233,19 @@ export const Swap: React.FC = () => {
 			value = value.substring(1);
 		}
 
-		cancelActiveRequestOnly(); // Возвращаем обратно - нужен для отмены активных запросов
+		// Отменяем только активный запрос, но не очищаем данные
+		cancelActiveRequestOnly();
 		setInputValue(value);
 		setHasInput(!!value);
 
-		if (!value) {
-			if (updateInterval) {
-				clearInterval(updateInterval);
-				setUpdateInterval(null);
-			}
-			setAmount('');
-			resetOutputAmount();
+		// Немедленно останавливаем интервал при пустом значении
+		// (это не должно ждать debounce)
+		if (!value && updateInterval) {
+			clearInterval(updateInterval);
+			setUpdateInterval(null);
 			dispatch(setIntervalActive(false));
-			// Очищаем route данные когда поле пустое
-			dispatch(resetRouteData());
 		}
+		// НЕ очищаем данные здесь - это будет делать useEffect с debouncedInputValue
 	};
 
 	const handleSwitchTokens = () => {

@@ -7,6 +7,7 @@ import { useTonConnectUI } from '@tonconnect/ui-react';
 import { sendTransaction } from '../../../entities/transactions/api/transactions.api';
 import { useTranslation } from 'react-i18next';
 import styles from './SwapTokenButton.module.css';
+import LoadingThreeDotsJumping from '../../UI/loaders/LoadingThreeDotsJumping';
 
 interface SwapTokenButtonProps {
 	onSwap: () => void;
@@ -22,6 +23,7 @@ export const SwapTokenButton: React.FC<SwapTokenButtonProps> = ({ onSwap }) => {
 	const inputAssetAddress = useSelector((state: RootState) => state.swapRoutes.inputAssetAddress);
 	const outputAssetAddress = useSelector((state: RootState) => state.swapRoutes.outputAssetAddress);
 	const route = useSelector((state: RootState) => state.swapRoutes.route);
+	const loading = useSelector((state: RootState) => state.swapRoutes.loading);
 
 	// Убираем loading из isDisabled - кнопка активна независимо от состояния загрузки
 	const isDisabled = !inputAssetAmount || !inputAssetAddress || !outputAssetAddress || !route;
@@ -57,7 +59,7 @@ export const SwapTokenButton: React.FC<SwapTokenButtonProps> = ({ onSwap }) => {
 			whileHover={!isDisabled ? { scale: 1.02 } : {}}
 			whileTap={!isDisabled ? { scale: 0.95 } : {}}
 		>
-			{t('swap_button')}
+			{loading ? <LoadingThreeDotsJumping /> : t('swap_button')}
 		</motion.button>
 	);
 };
