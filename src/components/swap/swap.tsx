@@ -300,9 +300,16 @@ export const Swap: React.FC = () => {
 
 	const handleMaxClick = () => {
 		if (selectedInputAsset) {
-			const maxBalance = getAssetBalance(selectedInputAsset);
-			setInputValue(maxBalance);
-			setHasInput(!!maxBalance);
+			const rawBalance = getAssetBalance(selectedInputAsset);
+			let formattedBalance;
+			if (selectedInputAsset.type === 'native' && normalizeAssetName(selectedInputAsset.name) === 'toncoin') {
+				formattedBalance = rawBalance;
+			} else {
+				formattedBalance = formatBalance(rawBalance, selectedInputAsset.decimals);
+			}
+
+			setInputValue(formattedBalance);
+			setHasInput(!!formattedBalance);
 		}
 	};
 
