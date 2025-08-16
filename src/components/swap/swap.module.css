@@ -148,8 +148,10 @@
 	justify-content: center;
 	cursor: pointer;
 	z-index: 1;
-	transition: all 0.2s;
+	transition: transform 0.2s ease, background-color 0.2s ease;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	/* Добавляем -webkit-tap-highlight-color для мобильных устройств */
+	-webkit-tap-highlight-color: transparent;
 }
 
 .switchButton:hover {
@@ -159,6 +161,10 @@
 .switchButton:active {
 	transform: translate(-50%, -50%) scale(0.95);
 	background-color: var(--bg-color);
+}
+
+.switchButton:focus {
+	outline: none;
 }
 
 .switchIcon {

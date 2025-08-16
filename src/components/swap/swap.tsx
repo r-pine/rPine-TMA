@@ -238,24 +238,40 @@ export const Swap: React.FC = () => {
 		setInputValue(value);
 		setHasInput(!!value);
 
-		// Немедленно останавливаем интервал при пустом значении
-		// (это не должно ждать debounce)
 		if (!value && updateInterval) {
 			clearInterval(updateInterval);
 			setUpdateInterval(null);
 			dispatch(setIntervalActive(false));
 		}
-		// НЕ очищаем данные здесь - это будет делать useEffect с debouncedInputValue
 	};
+
+	const switchButtonRef = useRef<HTMLButtonElement>(null);
 
 	const handleSwitchTokens = () => {
 		if (!selectedInputAsset || !selectedOutputAsset) return;
+
+		// Меняем местами активы
 		const tempAsset = selectedInputAsset;
 		setSelectedInputAsset(selectedOutputAsset);
 		setSelectedOutputAsset(tempAsset);
 		setInputAsset(selectedOutputAsset.address);
 		setOutputAsset(selectedInputAsset.address);
 		resetOutputAmount();
+
+		// Программно сбрасываем фокус и активное состояние кнопки
+		if (switchButtonRef.current) {
+			// Сначала убираем фокус с кнопки
+			switchButtonRef.current.blur();
+
+			// Затем принудительно сбрасываем все стили, которые могли остаться
+			// Для этого временно делаем кнопку недоступной и сразу возвращаем обратно
+			switchButtonRef.current.disabled = true;
+			setTimeout(() => {
+				if (switchButtonRef.current) {
+					switchButtonRef.current.disabled = false;
+				}
+			}, 10);
+		}
 	};
 
 	const handleInputAssetSelect = (asset: Asset) => {
@@ -360,6 +376,7 @@ export const Swap: React.FC = () => {
 				</div>
 
 				<button
+					ref={switchButtonRef}
 					className={styles.switchButton}
 					onClick={handleSwitchTokens}
 					disabled={!selectedInputAsset || !selectedOutputAsset}
