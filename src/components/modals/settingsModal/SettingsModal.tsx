@@ -36,20 +36,22 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
 									</svg>
 								</button>
 							</div>
-							<div className={styles.modalBody}>
-								<SwapSettings />
+							<div className={styles.modalBodyContainer}>
+								<div className={styles.modalBody}>
+									<SwapSettings />
+								</div>
+								<div>
+									<motion.button
+										className={styles.saveButton}
+										onClick={onClose}
+										whileHover={{ scale: 1.02 }}
+										whileTap={{ scale: 0.95 }}
+									>
+										{t('settings_save_button')}
+									</motion.button>
+								</div>
+								<Footer />
 							</div>
-							<div className={styles.modalFooter}>
-								<motion.button
-									className={styles.saveButton}
-									onClick={onClose}
-									whileHover={{ scale: 1.02 }}
-									whileTap={{ scale: 0.95 }}
-								>
-									{t('settings_save_button')}
-								</motion.button>
-							</div>
-							<Footer />
 						</motion.div>
 					</div>
 				</div>

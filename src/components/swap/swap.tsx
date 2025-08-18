@@ -443,7 +443,7 @@ export const Swap: React.FC = () => {
 				onSelect={handleOutputAssetSelect}
 				excludeAsset={selectedInputAsset}
 			/>
-			<Footer />
+			<Footer className={styles.footer} />
 		</div>
 	);
 };

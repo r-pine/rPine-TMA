@@ -12,6 +12,7 @@
 }
 
 .modalContent {
+	margin-top: 5%;
 	background: var(--bg-modal-color);
 	border-radius: 12px;
 	width: 20em;
@@ -55,12 +56,13 @@
 	color: var(--color-text-primary);
 }
 
-.modalBody {
-	max-height: calc(80vh - 60px);
+.modalBodyContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
 }
 
 .saveButton {
-	margin: 24px 0;
 	width: 100%;
 	background: var(--success-button);
 	border: none;
