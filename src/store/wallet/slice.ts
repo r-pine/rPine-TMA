@@ -10,8 +10,6 @@ const initialState: WalletState = {
 		isLoading: false,
 		error: null
 	},
-	opineBalance: '0',
-	apineBalance: '0',
 	tonBalance: '0',
 	telegramData: {
 		queryString: null,

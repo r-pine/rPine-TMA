@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import AirswapTransaction from '../../components/Airswap/Airswap';
 import styles from './AirswapPage.module.css';
-import { selectOpineBalance } from '../../store/wallet/selectors';
 import useTonWalletAddress from '../../entities/wallet/hooks/useWalletAddress.hook';
 import TonWalletConnect from '../../components/UI/TonWalletConnectButton/TonWalletConnect';
 import Footer from '../../widgets/footer/Footer';
@@ -14,8 +12,8 @@ import { Message } from '../../entities/airswap/types';
 export const AirswapPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { isConnected } = useTonWalletAddress();
-	const opineBalance = useSelector(selectOpineBalance);
 	const [messages, setMessages] = useState<Message[] | null>(null);
+	const [opineBalance, setOpineBalance] = useState<string>('0');
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -29,15 +27,18 @@ export const AirswapPage: React.FC = () => {
 				setError(null);
 				const payloadData = await fetchAirswapTransactionData();
 				setMessages(payloadData.messages);
+				if (payloadData.available_amount !== undefined) {
+					setOpineBalance(payloadData.available_amount);
+				}
 			} catch (error) {
-				setError((t('error_fetching')));
+				setError(t('error_fetching'));
 				console.error('Error:', error);
 			} finally {
 				setIsLoading(false);
 			}
 		};
 		loadData();
-	}, [isConnected]);
+	}, [isConnected, t]);
 
 	const handleClose = () => {
 		navigate('/');

@@ -41,7 +41,5 @@ export const selectWalletError = createSelector(
 	(wallet) => wallet.error
 );
 
-export const selectOpineBalance = (state: RootState) => state.wallet.opineBalance;
-export const selectApineBalance = (state: RootState) => state.wallet.apineBalance;
 export const selectTonBalance = (state: RootState) => state.wallet.tonBalance;
 

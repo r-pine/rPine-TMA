@@ -15,8 +15,6 @@ export interface WalletState {
 		isLoading: boolean;
 		error: string | null;
 	};
-	opineBalance: string;
-	apineBalance: string;
 	tonBalance: string;
 	telegramData: {
 		queryString: string | null;

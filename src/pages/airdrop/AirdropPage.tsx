@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import AirdropTransaction from '../../components/Airdrop/Airdrop';
 import styles from './AirdropPage.module.css';
-import { selectApineBalance } from '../../store/wallet/selectors';
 import useTonWalletAddress from '../../entities/wallet/hooks/useWalletAddress.hook';
 import TonWalletConnect from '../../components/UI/TonWalletConnectButton/TonWalletConnect';
 import Footer from '../../widgets/footer/Footer';
@@ -14,8 +12,8 @@ import { Message } from '../../entities/airdrop/types';
 export const AirdropPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { isConnected } = useTonWalletAddress();
-	const apineBalance = useSelector(selectApineBalance);
 	const [messages, setMessages] = useState<Message[] | null>(null);
+	const [apineBalance, setApineBalance] = useState<string>('0');
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -29,6 +27,10 @@ export const AirdropPage: React.FC = () => {
 				setError(null);
 				const payloadData = await fetchAirdropTransactionData();
 				setMessages(payloadData.messages);
+				// Устанавливаем баланс из ответа API
+				if (payloadData.available_amount !== undefined) {
+					setApineBalance(payloadData.available_amount);
+				}
 			} catch (error) {
 				setError('Error fetching data');
 				console.error('Error:', error);

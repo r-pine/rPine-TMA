@@ -8,6 +8,7 @@ export interface Message {
 
 export interface AirdropPayload {
 	messages: Message[];
+	available_amount?: string;
 }
 
 export interface SendTransactionRequest {
