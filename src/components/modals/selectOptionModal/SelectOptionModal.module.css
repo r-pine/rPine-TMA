@@ -111,3 +111,7 @@
 .optionButton:hover {
 	opacity: 0.9;
 }
+
+.footer {
+	margin-top: 5%;
+}

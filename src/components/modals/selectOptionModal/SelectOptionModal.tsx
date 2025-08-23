@@ -75,7 +75,7 @@ export const SelectOptionModal: React.FC<SelectOptionModalProps> = ({
 									</div>
 								</div>
 							</div>
-							<Footer />
+							<Footer className={styles.footer} />
 						</motion.div>
 					</div>
 				</div>

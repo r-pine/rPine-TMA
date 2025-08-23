@@ -98,23 +98,21 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 					{!hasRoutes ? (
 						<div className={styles.routeNotFound}>{t('route_not_found')}</div>
 					) : displayData?.routes?.map((route: Route, index: number) => (
-						<div key={index} className={styles.routeItem}>
-							{route.routeSteps?.map((step, stepIndex) => (
-								<div key={stepIndex} className={styles.routeStep}>
-									<span className={styles.percent}>{route.inputPercent}%</span>
-									<div className={styles.lineContainer}>
-										<img src="/assets/icons/stroke_line.svg" alt="route line" className={styles.strokeLine} />
-										<div className={styles.stepContainer}>
-											<img src={step.dex?.image} alt="DEX" className={styles.dexImage} />
-											<span className={styles.assetsGroup}>
-												<img src={step.inputAsset?.image} alt="Input Asset" className={styles.assetImage} />
-												<img src={step.outputAsset?.image} alt="Output Asset" className={styles.assetImage} />
-											</span>
-										</div>
+						<div key={index} className={styles.routeRow}>
+							<span className={styles.percent}>{route.inputPercent}%</span>
+							<img src="/assets/icons/stroke_line.svg" alt="route line" className={styles.strokeLine} />
+							<div className={styles.stepsOverlay}>
+								{route.routeSteps?.map((step, stepIndex) => (
+									<div key={stepIndex} className={styles.stepContainer}>
+										<img src={step.dex?.image} alt="DEX" className={styles.dexImage} />
+										<span className={styles.assetsGroup}>
+											<img src={step.inputAsset?.image} alt="Input Asset" className={styles.assetImage} />
+											<img src={step.outputAsset?.image} alt="Output Asset" className={styles.assetImage} />
+										</span>
 									</div>
-									<span className={styles.percent}>{route.inputPercent}%</span>
-								</div>
-							))}
+								))}
+							</div>
+							<span className={styles.percent}>{route.inputPercent}%</span>
 						</div>
 					))}
 				</div>

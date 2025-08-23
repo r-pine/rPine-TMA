@@ -18,7 +18,7 @@
 		"@preact/signals-react": "^3.0.1",
 		"@reduxjs/toolkit": "^2.6.1",
 		"@ton/core": "^0.60.1",
-		"@tonconnect/ui-react": "^2.0.11",
+		"@tonconnect/ui-react": "^2.2.0",
 		"@types/react-copy-to-clipboard": "^5.0.7",
 		"@types/react-redux": "^7.1.34",
 		"@types/telegram-web-app": "^7.10.1",

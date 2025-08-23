@@ -9,14 +9,15 @@ import BuyNFTPromotion from '../../components/UI/buyNFTPromotion/BuyNFTPromotion
 import { useDispatch, useSelector } from 'react-redux';
 import { setForceRefresh } from '../../store/swapRoutes/slice';
 import { useSettingsModal } from '../../components/SwapSettings';
-import { selectIsIntervalActive } from '../../store/swapRoutes/selectors';
+import { selectSwapRoutesLoading } from '../../store/swapRoutes/selectors';
+import Footer from '../../widgets/footer/Footer';
 
 const Home = () => {
 	const [tonConnectUI] = useTonConnectUI();
 	const { isConnected } = useWalletStore(tonConnectUI);
 	const dispatch = useDispatch();
 	const { openSettingsModal, SettingsModalComponent } = useSettingsModal();
-	const isIntervalActive = useSelector(selectIsIntervalActive);
+	const isFetching = useSelector(selectSwapRoutesLoading);
 
 	const handleRefreshClick = () => {
 		dispatch(setForceRefresh(true));
@@ -40,7 +41,7 @@ const Home = () => {
 									<img
 										src="/assets/icons/refresh_icon.svg"
 										alt="refresh"
-										className={`${styles.toolbarIcon} ${isIntervalActive ? styles.rotating : ''}`}
+										className={`${styles.toolbarIcon} ${isFetching ? styles.rotating : ''}`}
 									/>
 								</button>
 								<button className={styles.toolbarButton} onClick={openSettingsModal}>
@@ -56,6 +57,7 @@ const Home = () => {
 					{!isConnected && <TonWalletConnect />}
 				</div>
 				<BuyNFTPromotion />
+				<Footer className={styles.footer} />
 			</div>
 			{SettingsModalComponent}
 		</>

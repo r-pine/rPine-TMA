@@ -24,8 +24,7 @@ export const SwapTokenButton: React.FC<SwapTokenButtonProps> = ({ onSwap }) => {
 	const outputAssetAddress = useSelector((state: RootState) => state.swapRoutes.outputAssetAddress);
 	const route = useSelector((state: RootState) => state.swapRoutes.route);
 	const loading = useSelector((state: RootState) => state.swapRoutes.loading);
-
-	// Убираем loading из isDisabled - кнопка активна независимо от состояния загрузки
+	const showLoading = loading && !route;
 	const isDisabled = !inputAssetAmount || !inputAssetAddress || !outputAssetAddress || !route;
 
 	const handleSwap = async () => {
@@ -59,7 +58,7 @@ export const SwapTokenButton: React.FC<SwapTokenButtonProps> = ({ onSwap }) => {
 			whileHover={!isDisabled ? { scale: 1.02 } : {}}
 			whileTap={!isDisabled ? { scale: 0.95 } : {}}
 		>
-			{loading ? <LoadingThreeDotsJumping /> : t('swap_button')}
+			{showLoading ? <LoadingThreeDotsJumping /> : t('swap_button')}
 		</motion.button>
 	);
 };

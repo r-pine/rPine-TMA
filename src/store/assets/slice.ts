@@ -20,8 +20,9 @@ const assetsSlice = createSlice({
 		setError: (state, action: PayloadAction<string | null>) => {
 			state.error = action.payload;
 		},
+		resetAssetsState: () => initialState,
 	},
 });
 
-export const { setAssets, setUserAssets, setLoading, setError } = assetsSlice.actions;
+export const { setAssets, setUserAssets, setLoading, setError, resetAssetsState } = assetsSlice.actions;
 export default assetsSlice.reducer; 

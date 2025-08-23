@@ -1,6 +1,6 @@
 .container {
 	margin-top: 16px;
-	padding: 16px;
+
 	background-color: var(--bg-container-color);
 }
 
@@ -110,22 +110,33 @@
 	text-align: center;
 }
 
-.routeStep {
+.routeRow {
+	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	background-color: var(--bg-modal-color);
-	position: relative;
-	margin-bottom: 8px;
+	justify-content: center;
+	padding: 12px 0;
+}
+
+.stepsOverlay {
+	position: absolute;
+	top: 0;
+	width: 80%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	gap: 8px;
+	z-index: 2;
+	pointer-events: none;
 }
 
 .stepContainer {
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: 8px;
 	background-color: var(--button-connected-wallet);
 	position: relative;
-	z-index: 2;
 	padding: 4px 8px;
 	border-radius: 25px;
 	height: 20px;
@@ -135,18 +146,13 @@
 	font-family: 'Manrope Medium';
 	font-size: 12px;
 	color: var(--text-ultramarine-color);
-	z-index: 2;
 	min-width: 40px;
 	text-align: center;
 }
 
 .strokeLine {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	width: calc(100% - 80px);
-	z-index: 1;
+	position: relative;
+	width: 100%;
 }
 
 .dexImage,

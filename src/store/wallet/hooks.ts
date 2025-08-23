@@ -9,8 +9,8 @@ import {
 	selectBalancesLoading,
 	selectBalancesError
 } from './selectors';
-import { connectWallet, fetchBalancesThunk } from './thunks';
-import { setWalletAddress, setIsConnected, clearTelegramData } from './slice';
+import { connectWallet, fetchBalancesThunk, disconnectWallet } from './thunks';
+import { setWalletAddress } from './slice';
 
 export const useWallet = () => {
 	const dispatch = useDispatch<AppDispatch>();
@@ -27,9 +27,7 @@ export const useWallet = () => {
 	};
 
 	const disconnect = () => {
-		dispatch(setWalletAddress(null));
-		dispatch(setIsConnected(false));
-		dispatch(clearTelegramData());
+		dispatch(disconnectWallet());
 	};
 
 	const getBalance = useCallback((assetAddress: string) => {

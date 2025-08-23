@@ -18,7 +18,7 @@ import { selectForceRefresh } from '../../store/swapRoutes/selectors';
 import { setIntervalActive, resetRouteData, setLoading } from '../../store/swapRoutes/slice';
 import { formatBalance } from '../../shared/utils/formatBalance';
 import { MaxValueExchangeButton } from '../MaxValueExchangeButton/MaxValueExchangeButton';
-import Footer from '../../widgets/footer/Footer';
+
 
 export const Swap: React.FC = () => {
 
@@ -171,7 +171,7 @@ export const Swap: React.FC = () => {
 					dispatch(setLoading(false));
 				}
 				startNextRequest();
-			}, 20000);
+			}, 10000);
 
 			setUpdateInterval(interval);
 			dispatch(setIntervalActive(true));
@@ -443,7 +443,6 @@ export const Swap: React.FC = () => {
 				onSelect={handleOutputAssetSelect}
 				excludeAsset={selectedInputAsset}
 			/>
-			<Footer className={styles.footer} />
 		</div>
 	);
 };

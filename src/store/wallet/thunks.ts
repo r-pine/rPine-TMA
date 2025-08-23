@@ -4,6 +4,10 @@ import { fetchBalance } from '../../entities/wallet/api/balance.api';
 import { TonConnectUI } from '@tonconnect/ui-react';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchUserJettons } from '../../entities/assets/api/ton.api';
+import { resetAssetsState, setUserAssets } from '../assets/slice';
+import { updateUserAssets } from '../assets/thunks';
+import { Asset } from '../assets/types';
+import { resetSwapState } from '../swapRoutes/slice';
 import {
 	setBalances,
 	setBalancesLoading,
@@ -24,12 +28,31 @@ const setupWalletListeners = (
 		try {
 			const latestWallet = tonConnectUI.wallet;
 			if (latestWallet?.account.address === currentAddress) {
-				const jettons = await fetchUserJettons(currentAddress);
+				const [jettons, tonBalance] = await Promise.all([
+					fetchUserJettons(currentAddress),
+					fetchBalance(currentAddress)
+				]);
 				const balances = jettons.balances.reduce((acc: { [key: string]: string }, jetton) => {
 					acc[jetton.jetton.address] = jetton.balance;
 					return acc;
 				}, {});
 				dispatch(setBalances(balances));
+				dispatch(setTonBalance(tonBalance?.toString() || '0'));
+				// Обновляем также assets.userAssets, чтобы getAssetBalance видел актуальные данные
+				const userAssets: Asset[] = jettons.balances.map(balance => ({
+					type: 'jetton',
+					address: balance.jetton.address,
+					name: balance.jetton.name,
+					symbol: balance.jetton.symbol,
+					image: balance.jetton.image,
+					decimals: balance.jetton.decimals,
+					verification: balance.jetton.verification,
+					isScam: balance.wallet_address.is_scam,
+					isWallet: balance.wallet_address.is_wallet,
+					balance: balance.balance,
+					showWarning: balance.jetton.verification !== 'whitelist',
+				}));
+				dispatch(setUserAssets(userAssets));
 			}
 		} catch (error) {
 			console.error('Ошибка при обновлении баланса:', error);
@@ -48,6 +71,8 @@ const setupWalletListeners = (
 			dispatch(setBalancesError(null));
 			dispatch(setTonBalance('0'));
 			dispatch(clearTelegramData());
+			dispatch(resetAssetsState());
+			dispatch(resetSwapState());
 		}
 	});
 
@@ -116,6 +141,8 @@ export const connectWalletWithTonConnect = (
 				dispatch(setWalletAddress(currentAddress));
 				dispatch(setIsConnected(tonConnectUI.connected));
 				dispatch(connectWallet());
+				// Первичное обновление userAssets сразу после подключения
+				dispatch(updateUserAssets(currentAddress));
 				setupWalletListeners(tonConnectUI, currentAddress, dispatch);
 				return;
 			}
@@ -135,6 +162,8 @@ export const connectWalletWithTonConnect = (
 				dispatch(setWalletAddress(currentAddress));
 				dispatch(setIsConnected(tonConnectUI.connected));
 				dispatch(connectWallet());
+				// Первичное обновление userAssets
+				dispatch(updateUserAssets(currentAddress));
 				setupWalletListeners(tonConnectUI, currentAddress, dispatch);
 			});
 		} catch (error) {
@@ -156,6 +185,8 @@ export const disconnectWallet = createAsyncThunk(
 			dispatch(setBalancesError(null));
 			dispatch(setTonBalance('0'));
 			dispatch(clearTelegramData());
+			dispatch(resetAssetsState());
+			dispatch(resetSwapState());
 		} catch (error) {
 			dispatch(setError(error instanceof Error ? error.message : 'Failed to disconnect wallet'));
 			throw error;
