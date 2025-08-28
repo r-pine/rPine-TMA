@@ -4,7 +4,7 @@ export const TONAPI_URL = 'https://tonapi.io/v2';
 export const SWAP_ROUTE_URL = 'https://demo2.rpine.xyz/api';
 
 export const TON_CONNECT_CONFIG = {
-	manifestUrl: 'https://api.rpine.xyz/static/json/tonconnect-manifest.json',
+	manifestUrl: 'https://api.rpine.xyz/static/json/tonconnect-manifest-nft.json',
 	uiPreferences: {
 		theme: 'DARK' as const,
 		colorsSet: {
