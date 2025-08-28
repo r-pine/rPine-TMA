@@ -1,3 +1,6 @@
+.nft_page_container{
+	margin-top: 2%;
+}
 .container {
 	background-color: var(--bg-container-color);
 	max-width: var(--app-max-width);

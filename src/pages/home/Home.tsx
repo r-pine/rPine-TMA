@@ -54,7 +54,7 @@ const Home = () => {
 						<div className={styles.balance_statement}><WalletBalance /></div>
 					</div>
 					<Swap />
-					{!isConnected && <TonWalletConnect />}
+					{!isConnected && <TonWalletConnect className={styles.connectWalletButton} />}
 				</div>
 				<BuyNFTPromotion />
 				<Footer className={styles.footer} />

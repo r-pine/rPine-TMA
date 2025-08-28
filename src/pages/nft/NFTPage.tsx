@@ -20,7 +20,7 @@ const NFTPage = () => {
 	const { walletAddress } = useTonWalletAddress();
 
 	return (
-		<div>
+		<div className={styles.nft_page_container}>
 			<div className={styles.container}>
 				<div className={styles.header}>
 					<h1>{t("header")}</h1>

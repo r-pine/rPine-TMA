@@ -2,7 +2,6 @@
 	font-family: 'Manrope Normal', sans-serif;
 	display: flex;
 	justify-content: center;
-	padding: 2% 0;
 	line-height: 1.5;
 	font-weight: 400;
 	color-scheme: light dark;
@@ -121,7 +120,6 @@
 
 body {
 	margin: 0;
-	padding: 0;
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;

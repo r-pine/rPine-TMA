@@ -6,7 +6,7 @@ import { useWalletStore } from '../../../store/wallet/useWalletStore';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import styles from './TonWalletConnect.module.css';
 
-const TonWalletConnect = ({ customStyle }: { customStyle?: string }) => {
+const TonWalletConnect = ({ customStyle, className }: { customStyle?: string, className?: string }) => {
 	const { t } = useTranslation();
 	const [tonConnectUI] = useTonConnectUI();
 	const { address, formattedAddress, isConnected, connect, disconnect } = useWalletStore(tonConnectUI);
@@ -54,7 +54,7 @@ const TonWalletConnect = ({ customStyle }: { customStyle?: string }) => {
 	}, [copied]);
 
 	return (
-		<div>
+		<div className={className}>
 			{isConnected ? (
 				<div>
 					<motion.button

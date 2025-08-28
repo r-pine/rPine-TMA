@@ -1,6 +1,7 @@
 .container {
 	max-width: var(--app-max-width);
 	border-radius: 18px;
+	padding: 2% 0;
 }
 
 .swap_container {
@@ -62,6 +63,10 @@
 	color: #ECECEC !important;
 	font-family: 'Involve SemiBold' !important;
 	font-size: 16px !important;
+}
+
+.connectWalletButton {
+	margin-top: 5%;
 }
 
 .balance_container {

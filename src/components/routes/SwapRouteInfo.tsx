@@ -4,6 +4,7 @@ import { RootState } from '../../store/store';
 import { Route } from '../../store/swapRoutes/types';
 import { useTranslation } from 'react-i18next';
 import styles from './SwapRouteInfo.module.css';
+import { selectAssetByAddress } from '../../store/assets/selectors';
 
 const selectExchangeRate = (state: RootState) => state.swapRoutes.exchangeRate;
 const selectRoute = (state: RootState) => state.swapRoutes.route;
@@ -46,11 +47,25 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 		// Убираем else блок - компонент остается видимым после первого появления
 	}, [route?.displayData, isDataVisible]);
 
+	// ВАЖНО: хуки должны вызываться в одном и том же порядке на каждом рендере.
+	// Поэтому вычисляем данные и вызываем useSelector ДОО любых ранних return.
+	const displayData = route?.displayData || previousData;
+	const inputSymbol = displayData?.routes?.[0]?.routeSteps?.[0]?.inputAsset?.symbol ?? '';
+	const lastRoute = displayData?.routes?.[displayData.routes.length - 1];
+	const lastStep = lastRoute?.routeSteps?.[lastRoute.routeSteps.length - 1];
+	const outputSymbol = lastStep?.outputAsset?.symbol ?? '';
+	const outputAddress = lastStep?.outputAsset?.address;
+
+	// Метаданные выходного ассета из list-assets (для decimals)
+	const outputAssetMeta = useSelector((state: RootState) => (
+		outputAddress ? selectAssetByAddress(state, outputAddress) : undefined
+	));
+	// USDT всегда 6 знаков, иначе берём decimals из метаданных или делаем fallback = 9
+	const outputDecimals = outputAssetMeta?.symbol === 'USDT' ? 6 : (outputAssetMeta?.decimals ?? 9);
+
 	if (!hasInput) {
 		return null;
 	}
-
-	const displayData = route?.displayData || previousData;
 
 	// Показываем компонент если есть hasInput, даже если данных еще нет
 	// Это позволит плавно появиться при первом получении данных
@@ -58,18 +73,13 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 		return null;
 	}
 
-	const inputSymbol = displayData?.routes?.[0]?.routeSteps?.[0]?.inputAsset?.symbol ?? '';
-	const lastRoute = displayData?.routes?.[displayData.routes.length - 1];
-	const lastStep = lastRoute?.routeSteps?.[lastRoute.routeSteps.length - 1];
-	const outputSymbol = lastStep?.outputAsset?.symbol ?? '';
-
 	const hasRoutes = displayData?.routes !== null;
 
 	return (
 		<div className={styles.container}>
 			{hasRoutes && exchangeRate && (
 				<div className={`${styles.exchangeRate} ${isDataVisible ? styles.visible : ''} ${isUpdating ? styles.updating : ''}`}>
-					1 {inputSymbol} = {exchangeRate.toFixed(6)} {outputSymbol}
+					1 {inputSymbol} = {exchangeRate.toFixed(outputDecimals)} {outputSymbol}
 				</div>
 			)}
 			<div className={styles.borderContainer}>
@@ -83,7 +93,10 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 					<div className={styles.infoItem}>
 						<span className={styles.label}>{t('recieve_tokens_text')}</span>
 						<span className={`${styles.value} ${isUpdating ? styles.updating : ''}`}>
-							{displayData?.minOutputAssetAmount ?? '0'} {outputSymbol}
+							{displayData?.minOutputAssetAmount != null
+								? displayData.minOutputAssetAmount.toFixed(outputDecimals)
+								: (0).toFixed(outputDecimals)
+							} {outputSymbol}
 						</span>
 					</div>
 					<div className={styles.infoItem}>
