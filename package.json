@@ -1,10 +1,10 @@
 {
 	"name": "rpineapp",
 	"private": true,
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"proxy": "https://tonapi.io",
 	"type": "module",
-	"homepage": "nft.rpine.xyz",
+	"homepage": "app.rpine.xyz",
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
