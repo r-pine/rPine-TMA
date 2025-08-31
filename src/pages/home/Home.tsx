@@ -32,22 +32,24 @@ const Home = () => {
 				<SwapHeader />
 				<div className={styles.swap_container}>
 					<div className={styles.toolbar}>
-						<TonWalletConnect
-							customStyle={isConnected ? styles.connectWalletCustomConnected : styles.connectWalletCustom}
-						/>
 						{isConnected && (
-							<div>
-								<button className={styles.toolbarButton} onClick={handleRefreshClick}>
-									<img
-										src="/assets/icons/refresh_icon.svg"
-										alt="refresh"
-										className={`${styles.toolbarIcon} ${isFetching ? styles.rotating : ''}`}
-									/>
-								</button>
-								<button className={styles.toolbarButton} onClick={openSettingsModal}>
-									<img src="/assets/icons/settings_icon.svg" alt="settings" className={styles.toolbarIcon} />
-								</button>
-							</div>
+							<>
+								<TonWalletConnect
+									customStyle={styles.connectWalletCustomConnected}
+								/>
+								<div>
+									<button className={styles.toolbarButton} onClick={handleRefreshClick}>
+										<img
+											src="/assets/icons/refresh_icon.svg"
+											alt="refresh"
+											className={`${styles.toolbarIcon} ${isFetching ? styles.rotating : ''}`}
+										/>
+									</button>
+									<button className={styles.toolbarButton} onClick={openSettingsModal}>
+										<img src="/assets/icons/settings_icon.svg" alt="settings" className={styles.toolbarIcon} />
+									</button>
+								</div>
+							</>
 						)}
 					</div>
 					<div className={styles.balance_container}>

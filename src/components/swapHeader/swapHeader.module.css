@@ -31,7 +31,7 @@
 
 .header {
 	font-family: 'Manrope Normal';
-	font-size: 1em;
+	font-size: 0.8em;
 	color: var(--header-color);
 	margin: 0 0 0 8px;
 	width: 100%;
