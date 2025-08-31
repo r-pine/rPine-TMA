@@ -18,10 +18,12 @@ import { selectForceRefresh } from "../../store/swapRoutes/selectors";
 import {
     setIntervalActive,
     resetRouteData,
-    setLoading,
 } from "../../store/swapRoutes/slice";
 import { formatBalance } from "../../shared/utils/formatBalance";
 import { MaxValueExchangeButton } from "../MaxValueExchangeButton/MaxValueExchangeButton";
+
+// Глобальная переменная для отслеживания активного интервала (для отладки)
+let globalSwapInterval: number | null = null;
 
 export const Swap: React.FC = () => {
     const { assets, loading: assetsLoading, loadAssets } = useAssets();
@@ -56,7 +58,7 @@ export const Swap: React.FC = () => {
     const [inputValue, setInputValue] = useState("");
     const [hasInput, setHasInput] = useState(false);
     const debouncedInputValue = useDebounce(inputValue, 300);
-    const [updateInterval, setUpdateInterval] = useState<number | null>(null);
+    const updateIntervalRef = useRef<number | null>(null);
 
     // Состояния для плавных переходов
     const [isOutputVisible, setIsOutputVisible] = useState(false);
@@ -115,16 +117,39 @@ export const Swap: React.FC = () => {
         loadAssets();
     }, [loadAssets]);
 
+    // Создаем стабильные ссылки для setInputAsset и setOutputAsset
+    const setInputAssetRef = useRef(setInputAsset);
+    const setOutputAssetRef = useRef(setOutputAsset);
+    setInputAssetRef.current = setInputAsset;
+    setOutputAssetRef.current = setOutputAsset;
+
     useEffect(() => {
         if (tonAsset && usdtAsset) {
             setSelectedInputAsset(tonAsset);
             setSelectedOutputAsset(usdtAsset);
-            setInputAsset(tonAsset.address);
-            setOutputAsset(usdtAsset.address);
+            setInputAssetRef.current(tonAsset.address);
+            setOutputAssetRef.current(usdtAsset.address);
         }
-    }, [assets, tonAsset, usdtAsset, setInputAsset, setOutputAsset]);
+    }, [assets, tonAsset, usdtAsset]); // Убираем функции из зависимостей
+
+    // Создаем стабильные ссылки на функции чтобы избежать циклов в useEffect
+    const loadRouteRef = useRef(loadRoute);
+    const setAmountRef = useRef(setAmount);
+    const resetOutputAmountRef = useRef(resetOutputAmount);
+
+    // Обновляем refs при изменении функций
+    loadRouteRef.current = loadRoute;
+    setAmountRef.current = setAmount;
+    resetOutputAmountRef.current = resetOutputAmount;
 
     useEffect(() => {
+        // Очищаем интервал при изменении debouncedInputValue
+        if (updateIntervalRef.current) {
+            clearInterval(updateIntervalRef.current);
+            updateIntervalRef.current = null;
+            dispatch(setIntervalActive(false));
+        }
+
         if (
             debouncedInputValue &&
             debouncedInputValue !== "0" &&
@@ -132,18 +157,22 @@ export const Swap: React.FC = () => {
             selectedOutputAsset
         ) {
             // Если есть значение, устанавливаем его и запускаем запрос
-            setAmount(debouncedInputValue);
+            console.log(
+                "✅ Debounced input changed, making initial request:",
+                debouncedInputValue
+            );
+            setAmountRef.current(debouncedInputValue);
 
-            loadRoute({
+            loadRouteRef.current({
                 inputAssetAmount: debouncedInputValue,
                 inputAssetAddress: selectedInputAsset.address,
                 outputAssetAddress: selectedOutputAsset.address,
             });
         } else if (debouncedInputValue === "" || debouncedInputValue === "0") {
             // Если значение пустое или 0, очищаем данные с задержкой debounce
-            console.log("Debounced input is empty, clearing data");
-            setAmount("");
-            resetOutputAmount();
+            console.log("🧹 Debounced input is empty, clearing data");
+            setAmountRef.current("");
+            resetOutputAmountRef.current();
             // Очищаем route данные когда поле пустое
             dispatch(resetRouteData());
         }
@@ -152,90 +181,121 @@ export const Swap: React.FC = () => {
         selectedInputAsset,
         selectedOutputAsset,
         dispatch,
+        // НЕ включаем функции в зависимости, используем refs
+    ]);
+
+    const swapLoadingRef = useRef(swapLoading);
+    swapLoadingRef.current = swapLoading;
+
+    const startIntervalRequest = useCallback(() => {
+        // Проверяем, что запрос не в процессе выполнения и значение еще валидно
+        if (
+            !swapLoadingRef.current &&
+            debouncedInputValue &&
+            debouncedInputValue !== "0" &&
+            selectedInputAsset &&
+            selectedOutputAsset
+        ) {
+            console.log("Starting interval request:", {
+                inputAssetAmount: debouncedInputValue,
+                inputAssetAddress: selectedInputAsset.address,
+                outputAssetAddress: selectedOutputAsset.address,
+            });
+            loadRoute({
+                inputAssetAmount: debouncedInputValue,
+                inputAssetAddress: selectedInputAsset.address,
+                outputAssetAddress: selectedOutputAsset.address,
+            });
+        } else {
+            console.log("Skipping interval request - conditions not met", {
+                swapLoading: swapLoadingRef.current,
+                debouncedInputValue,
+                hasInputAsset: !!selectedInputAsset,
+                hasOutputAsset: !!selectedOutputAsset,
+            });
+        }
+    }, [
+        debouncedInputValue,
+        selectedInputAsset,
+        selectedOutputAsset,
         loadRoute,
-        resetOutputAmount,
-        setAmount,
     ]);
 
     useEffect(() => {
+        // Очищаем предыдущий интервал
+        if (updateIntervalRef.current) {
+            clearInterval(updateIntervalRef.current);
+            updateIntervalRef.current = null;
+            dispatch(setIntervalActive(false));
+        }
+
+        // Очищаем глобальный интервал если он есть
+        if (globalSwapInterval) {
+            console.log("Clearing previous global interval");
+            clearInterval(globalSwapInterval);
+            globalSwapInterval = null;
+        }
+
         // Запускаем интервал только когда есть route (т.е. уже был первый успешный запрос)
-        // и все необходимые данные
+        // и все необходимые данные, и НЕТ активной загрузки
         if (
             route &&
             debouncedInputValue &&
+            debouncedInputValue !== "0" &&
             selectedInputAsset?.address &&
-            selectedOutputAsset?.address
+            selectedOutputAsset?.address &&
+            !swapLoading // Важно: интервал запускается только когда нет активной загрузки
         ) {
-            if (updateInterval) {
-                clearInterval(updateInterval);
-            }
+            console.log("Setting up interval for route updates");
 
-            const startNextRequest = () => {
-                // Проверяем, что запрос не в процессе выполнения
-                if (!swapLoading) {
-                    console.log("Starting interval request:", {
-                        inputAssetAmount: debouncedInputValue,
-                        inputAssetAddress: selectedInputAsset.address,
-                        outputAssetAddress: selectedOutputAsset.address,
-                        swapLoading,
-                    });
-                    loadRoute({
-                        inputAssetAmount: debouncedInputValue,
-                        inputAssetAddress: selectedInputAsset.address,
-                        outputAssetAddress: selectedOutputAsset.address,
-                    });
-                } else {
-                    console.log("Skipping request - already loading:", {
-                        swapLoading,
-                    });
-                }
-            };
-
-            // НЕ делаем первый запрос сразу - он уже был сделан в useEffect для debouncedInputValue
-            // startNextRequest();
-
-            // Запросы через 20 секунд после завершения предыдущего
+            // Устанавливаем интервал на 20 секунд
             const interval = setInterval(() => {
-                console.log(
-                    "Interval triggered, checking if can send next request..."
-                );
-                // Если запрос завис (loading слишком долго), принудительно сбрасываем
-                if (swapLoading) {
-                    console.warn("Request seems stuck, forcing reset...");
-                    // Принудительно сбрасываем loading состояние
-                    dispatch(setLoading(false));
-                }
-                startNextRequest();
-            }, 10000);
+                console.log("🔄 Interval triggered, checking conditions...");
+                startIntervalRequest();
+            }, 20000);
 
-            setUpdateInterval(interval);
+            updateIntervalRef.current = interval;
+            globalSwapInterval = interval;
             dispatch(setIntervalActive(true));
 
             return () => {
-                if (interval) {
-                    clearInterval(interval);
+                if (updateIntervalRef.current) {
+                    clearInterval(updateIntervalRef.current);
+                    updateIntervalRef.current = null;
+                }
+                if (globalSwapInterval) {
+                    clearInterval(globalSwapInterval);
+                    globalSwapInterval = null;
                 }
                 dispatch(setIntervalActive(false));
             };
+        } else {
+            console.log("❌ Not setting interval:", {
+                hasRoute: !!route,
+                debouncedInputValue,
+                hasInputAsset: !!selectedInputAsset?.address,
+                hasOutputAsset: !!selectedOutputAsset?.address,
+                swapLoading,
+            });
         }
     }, [
         route,
         debouncedInputValue,
-        selectedInputAsset,
-        selectedOutputAsset,
-        swapLoading,
+        selectedInputAsset?.address,
+        selectedOutputAsset?.address,
+        swapLoading, // Добавляем обратно swapLoading в зависимости для правильной синхронизации
         dispatch,
-        loadRoute,
-        updateInterval,
+        startIntervalRequest,
     ]);
 
     useEffect(() => {
         return () => {
-            if (updateInterval) {
-                clearInterval(updateInterval);
+            if (updateIntervalRef.current) {
+                clearInterval(updateIntervalRef.current);
+                updateIntervalRef.current = null;
             }
         };
-    }, [updateInterval]);
+    }, []);
 
     useEffect(() => {
         if (address) {
@@ -251,7 +311,7 @@ export const Swap: React.FC = () => {
             selectedInputAsset &&
             selectedOutputAsset
         ) {
-            loadRoute({
+            loadRouteRef.current({
                 inputAssetAmount: inputValue,
                 inputAssetAddress: selectedInputAsset.address,
                 outputAssetAddress: selectedOutputAsset.address,
@@ -263,7 +323,7 @@ export const Swap: React.FC = () => {
         inputValue,
         selectedInputAsset,
         selectedOutputAsset,
-        loadRoute,
+        // НЕ включаем loadRoute в зависимости
     ]);
 
     const handleInputAmountChange = (
@@ -301,9 +361,9 @@ export const Swap: React.FC = () => {
         setInputValue(value);
         setHasInput(!!value);
 
-        if (!value && updateInterval) {
-            clearInterval(updateInterval);
-            setUpdateInterval(null);
+        if (!value && updateIntervalRef.current) {
+            clearInterval(updateIntervalRef.current);
+            updateIntervalRef.current = null;
             dispatch(setIntervalActive(false));
         }
     };

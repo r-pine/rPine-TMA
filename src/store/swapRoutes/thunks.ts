@@ -67,6 +67,7 @@ export const fetchRoute = createAsyncThunk(
                 clearTimeout(timeoutId);
 
                 if (signal?.aborted) {
+                    dispatch(setLoading(false));
                     return;
                 }
 
@@ -75,6 +76,7 @@ export const fetchRoute = createAsyncThunk(
                     dispatch(setInputAssetAddress(inputAssetAddress));
                     dispatch(setOutputAssetAddress(outputAssetAddress));
                     dispatch(setExchangeData(routeResponse.data));
+                    dispatch(setLoading(false));
                     return routeResponse.data;
                 } else {
                     console.warn(
@@ -87,13 +89,17 @@ export const fetchRoute = createAsyncThunk(
                                 "Route fetch failed, retrying..."
                         )
                     );
+                    dispatch(setLoading(false));
                     return null;
                 }
             } finally {
                 clearTimeout(timeoutId);
+                // Всегда сбрасываем состояние загрузки в finally
+                dispatch(setLoading(false));
             }
         } catch (error: unknown) {
             if (error instanceof Error && error.name === "AbortError") {
+                dispatch(setLoading(false));
                 return;
             }
 
@@ -116,6 +122,7 @@ export const fetchRoute = createAsyncThunk(
                 dispatch(setError("Unexpected error, retrying..."));
             }
 
+            dispatch(setLoading(false));
             return null;
         } finally {
             dispatch(setLoading(false));
