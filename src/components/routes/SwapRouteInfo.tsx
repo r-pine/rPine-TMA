@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { Route } from '../../store/swapRoutes/types';
+import { Route, DisplayData } from '../../store/swapRoutes/types';
 import { useTranslation } from 'react-i18next';
 import styles from './SwapRouteInfo.module.css';
 import { selectAssetByAddress } from '../../store/assets/selectors';
@@ -20,7 +20,7 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 
 	const [isDataVisible, setIsDataVisible] = useState(false);
 	const [isUpdating, setIsUpdating] = useState(false);
-	const [previousData, setPreviousData] = useState<any>(null);
+	const [previousData, setPreviousData] = useState<DisplayData | null>(null);
 
 	useEffect(() => {
 		if (route?.displayData) {

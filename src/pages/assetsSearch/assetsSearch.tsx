@@ -19,7 +19,7 @@ const formatBalance = (balance: string, decimals: number): string => {
 			return '0.00';
 		}
 		return (num / 10 ** decimals).toFixed(2);
-	} catch (e) {
+	} catch {
 		return '0.00';
 	}
 };
@@ -36,7 +36,7 @@ const mergeAssets = (
 		userAssetsByName[normalizedName] = asset;
 	});
 
-	let result: Asset[] = [];
+	const result: Asset[] = [];
 
 	serverAssets.forEach(serverAsset => {
 		const normalizedName = normalizeAssetName(serverAsset.name);

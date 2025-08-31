@@ -11,7 +11,7 @@ const useTonBalance = () => {
 
 	useEffect(() => {
 		let isMounted = true;
-		let timeout: ReturnType<typeof setTimeout> | null = null;
+		const timeout: ReturnType<typeof setTimeout> | null = null;
 
 		const updateBalance = async () => {
 			if (!tonConnectUI.wallet) {

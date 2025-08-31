@@ -55,7 +55,7 @@ export interface ExchangeData {
 		swapMessages: SwapMessage[];
 		messageCount: number;
 	};
-	route: any | null;
+	route: unknown | null;
 }
 
 export interface FetchRouteParams {

@@ -35,7 +35,7 @@ export const getTransactionBody = () => {
 	};
 };
 
-export const fetchTransactionData = async <T>(endpoint: string, body: any): Promise<T> => {
+export const fetchTransactionData = async <T>(endpoint: string, body: unknown): Promise<T> => {
 	const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
 		method: 'POST',
 		headers: API_CONFIG.DEFAULT_HEADERS,

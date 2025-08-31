@@ -2,7 +2,7 @@ import { Address } from 'ton-core';
 import { Buffer } from 'buffer';
 
 if (typeof window !== 'undefined') {
-	(window as any).Buffer = Buffer;
+	(window as unknown as { Buffer: typeof Buffer }).Buffer = Buffer;
 }
 
 const addressCache = new Map<string, string>();
