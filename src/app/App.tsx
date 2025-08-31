@@ -6,7 +6,7 @@ import './providers/i18n'
 function App() {
 	return (
 		<TonConnectUIProvider
-			manifestUrl="https://api.rpine.xyz/static/json/tonconnect-manifest-nft.json"
+			manifestUrl="https://api.rpine.xyz/static/json/tonconnect-manifest.json"
 			uiPreferences={{
 				theme: THEME.DARK,
 				colorsSet: {
