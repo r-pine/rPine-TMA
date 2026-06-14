@@ -7,7 +7,7 @@ import { useDebounce } from '../../shared/hooks/useDebounce';
 import { selectWalletAddress, selectTonBalance } from '../../store/wallet/selectors';
 import { selectUserAssets, selectAssetsLoading, selectAssets } from '../../store/assets/selectors';
 import { updateUserAssets, fetchAssets } from '../../store/assets/thunks';
-import { normalizeAssetName } from '../../entities/assets/model/utils';
+import { normalizeAssetName, getDisplaySymbol, isNativeAssetName } from '../../entities/assets/model/utils';
 import styles from './assetsSearch.module.css';
 import { useTranslation } from 'react-i18next';
 
@@ -44,7 +44,7 @@ const mergeAssets = (
 
 		let assetWithBalance: Asset;
 
-		if (serverAsset.type === 'native' && normalizedName === 'toncoin') {
+		if (serverAsset.type === 'native' && isNativeAssetName(normalizedName)) {
 			assetWithBalance = {
 				...serverAsset,
 				balance: tonBalance?.toString() || '0',
@@ -64,7 +64,7 @@ const mergeAssets = (
 	});
 
 	Object.values(userAssetsByName).forEach(asset => {
-		if (!(asset.type === 'native' && normalizeAssetName(asset.name) === 'toncoin')) {
+		if (!(asset.type === 'native' && isNativeAssetName(asset.name))) {
 			result.push(asset);
 		}
 	});
@@ -236,7 +236,7 @@ export const AssetsSearch: React.FC<AssetsSearchProps> = ({ onSelect, excludeAss
 														loading="lazy"
 													/>
 												)}
-												{asset.symbol}
+												{getDisplaySymbol(asset.symbol)}
 												{asset.showWarning && (
 													<img
 														src="/assets/icons/warning_icon.svg"
@@ -246,7 +246,7 @@ export const AssetsSearch: React.FC<AssetsSearchProps> = ({ onSelect, excludeAss
 												)}
 											</div>
 											<span className={styles.assetBalance}>
-												{asset.type === 'native' && normalizeAssetName(asset.name) === 'toncoin'
+												{asset.type === 'native' && isNativeAssetName(asset.name)
 													? asset.balance
 													: asset.balance ? formatBalance(asset.balance, asset.decimals) : '0.00'
 												}

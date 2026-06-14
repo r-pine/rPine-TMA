@@ -5,6 +5,7 @@ import { Route, DisplayData } from '../../store/swapRoutes/types';
 import { useTranslation } from 'react-i18next';
 import styles from './SwapRouteInfo.module.css';
 import { selectAssetByAddress } from '../../store/assets/selectors';
+import { getDisplaySymbol } from '../../entities/assets/model/utils';
 
 const selectExchangeRate = (state: RootState) => state.swapRoutes.exchangeRate;
 const selectRoute = (state: RootState) => state.swapRoutes.route;
@@ -50,10 +51,10 @@ export const SwapRouteInfo: React.FC<SwapRouteInfoProps> = ({ hasInput }) => {
 	// ВАЖНО: хуки должны вызываться в одном и том же порядке на каждом рендере.
 	// Поэтому вычисляем данные и вызываем useSelector ДОО любых ранних return.
 	const displayData = route?.displayData || previousData;
-	const inputSymbol = displayData?.routes?.[0]?.routeSteps?.[0]?.inputAsset?.symbol ?? '';
+	const inputSymbol = getDisplaySymbol(displayData?.routes?.[0]?.routeSteps?.[0]?.inputAsset?.symbol);
 	const lastRoute = displayData?.routes?.[displayData.routes.length - 1];
 	const lastStep = lastRoute?.routeSteps?.[lastRoute.routeSteps.length - 1];
-	const outputSymbol = lastStep?.outputAsset?.symbol ?? '';
+	const outputSymbol = getDisplaySymbol(lastStep?.outputAsset?.symbol);
 	const outputAddress = lastStep?.outputAsset?.address;
 
 	// Метаданные выходного ассета из list-assets (для decimals)

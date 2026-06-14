@@ -9,7 +9,7 @@ import { useAssets } from "../../store/assets/hooks";
 import { useDebounce } from "../../shared/hooks/useDebounce";
 import { selectBalances, selectTonBalance } from "../../store/wallet/selectors";
 import { selectUserAssets } from "../../store/assets/selectors";
-import { normalizeAssetName } from "../../entities/assets/model/utils";
+import { normalizeAssetName, getDisplaySymbol, isNativeSymbol, isNativeAssetName } from "../../entities/assets/model/utils";
 import styles from "./swap.module.css";
 import { SwapRouteInfo } from "../routes/SwapRouteInfo";
 import { SwapTokenButton } from "./SwapTokenButton/SwapTokenButton";
@@ -67,7 +67,7 @@ export const Swap: React.FC = () => {
 
     const { t } = useTranslation();
 
-    const tonAsset = assets.find((asset) => asset.symbol === "TON");
+    const tonAsset = assets.find((asset) => isNativeSymbol(asset.symbol));
     const usdtAsset = assets.find((asset) => asset.symbol === "USDT");
 
     // Эффект для плавных переходов output amount
@@ -97,7 +97,7 @@ export const Swap: React.FC = () => {
             if (!asset) return "0";
             if (
                 asset.type === "native" &&
-                normalizeAssetName(asset.name) === "toncoin"
+                isNativeAssetName(asset.name)
             ) {
                 return tonBalance?.toString() || "0";
             }
@@ -443,7 +443,7 @@ export const Swap: React.FC = () => {
             let formattedBalance;
             if (
                 selectedInputAsset.type === "native" &&
-                normalizeAssetName(selectedInputAsset.name) === "toncoin"
+                isNativeAssetName(selectedInputAsset.name)
             ) {
                 formattedBalance = rawBalance;
             } else {
@@ -463,7 +463,7 @@ export const Swap: React.FC = () => {
             <div className={styles.swapBlock}>
                 <div className={styles.inputSection}>
                     <div className={styles.amountText}>
-                        {t("amount_asset")} {selectedInputAsset?.symbol || ""}
+                        {t("amount_asset")} {getDisplaySymbol(selectedInputAsset?.symbol)}
                     </div>
 
                     <div className={styles.inputContainer}>
@@ -505,14 +505,13 @@ export const Swap: React.FC = () => {
                         {selectedInputAsset && (
                             <div className={styles.balanceInfo}>
                                 {selectedInputAsset.type === "native" &&
-                                normalizeAssetName(selectedInputAsset.name) ===
-                                    "toncoin"
+                                isNativeAssetName(selectedInputAsset.name)
                                     ? getAssetBalance(selectedInputAsset)
                                     : formatBalance(
                                           getAssetBalance(selectedInputAsset),
                                           selectedInputAsset.decimals
                                       )}{" "}
-                                {selectedInputAsset.symbol}
+                                {getDisplaySymbol(selectedInputAsset.symbol)}
                                 <MaxValueExchangeButton
                                     onMaxClick={handleMaxClick}
                                 />
@@ -536,7 +535,7 @@ export const Swap: React.FC = () => {
 
                 <div className={styles.outputSection}>
                     <div className={styles.amountText}>
-                        {t("amount_asset")} {selectedOutputAsset?.symbol || ""}
+                        {t("amount_asset")} {getDisplaySymbol(selectedOutputAsset?.symbol)}
                     </div>
                     <div className={styles.outputContainer}>
                         <input
@@ -572,14 +571,13 @@ export const Swap: React.FC = () => {
                         {selectedOutputAsset && (
                             <div className={styles.balanceInfo}>
                                 {selectedOutputAsset.type === "native" &&
-                                normalizeAssetName(selectedOutputAsset.name) ===
-                                    "toncoin"
+                                isNativeAssetName(selectedOutputAsset.name)
                                     ? getAssetBalance(selectedOutputAsset)
                                     : formatBalance(
                                           getAssetBalance(selectedOutputAsset),
                                           selectedOutputAsset.decimals
                                       )}{" "}
-                                {selectedOutputAsset.symbol}
+                                {getDisplaySymbol(selectedOutputAsset.symbol)}
                             </div>
                         )}
                     </div>

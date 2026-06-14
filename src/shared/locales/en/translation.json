@@ -1,11 +1,11 @@
 {
 	"header": "NFT Collection",
-	"balance": "Balance TON:",
+	"balance": "Balance GRAM:",
 	"availableNFT": "NFT Available:",
 	"info": "Information:",
 	"referral_program": "Referral Program",
 	"referral_program_paragraph": "Get your referral link at <1>rpine_xyz_bot</1> to start sharing now. Earn 15% NFT's value instantly after your friend makes a purchase, plus an extra 5% if you refer more than 5 friends!",
-	"buy_NFT_header": "Buy random NFT for 30 TON",
+	"buy_NFT_header": "Buy random NFT for 30 GRAM",
 	"buy_NFT_button": "Buy NFT",
 	"sec_market": "Secondary market:",
 	"footer_text": "Powered by",
